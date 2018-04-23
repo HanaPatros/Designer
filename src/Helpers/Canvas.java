@@ -481,6 +481,22 @@ public class Canvas extends JComponent {
         opslaan2();
     }
     
+    public void getDataPreset(){
+        Graphics2D g2d = (Graphics2D) img.getGraphics();
+        if (!em.isOpen()) {
+            em = emf.createEntityManager();
+        }
+
+        coordinaten = new ArrayList<>();
+        List<Coordinaat> coordinaten = (List<Coordinaat>) em.createQuery("SELECT t FROM Coordinaat t ").getResultList();
+        
+        for(Coordinaat cd: coordinaten){
+            g2d.setColor(Color.orange);
+
+        g2d.fillRect(cd.getX1(), cd.getY1(), cd.getWidth1(), cd.getHeight1());
+        }
+    }
+    
     // geeft geselcteerde desk aan
     public String getGegeven() {
         return gegeven;

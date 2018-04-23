@@ -3,6 +3,7 @@ package UI;
 
 
 import Helpers.Canvas;
+import Helpers.Preset;
 import Service.JsonService;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -60,6 +61,7 @@ public class Draw extends JFrame{
     List<String> presets;
     JsonService json;
     Canvas canvas;
+    Preset pr;
     Color color = Color.WHITE;
     JButton clearButton, blackButton, blueButton, greenButton, redButton,
             colorPicker, magentaButton, grayButton, orangeButton, yellowButton,
@@ -200,9 +202,21 @@ public class Draw extends JFrame{
                 }
                         
             }else if(event.getSource() == cmbPreset){
+                String twee = "2x2";
                 String vier = "4x4";
-                if(vier.equals(cmbPreset.getSelectedItem().toString())){
+                String acht = "8x8";
+                String combinatie = cmbPreset.getSelectedItem().toString();
+                pr = new Preset();
+                if(vier.equals(combinatie)){
                 
+                pr.vierOpVier();
+                canvas.getDataPreset();
+            }else if(twee.equals(combinatie)){
+                pr.tweeOpTwee();
+                canvas.getDataPreset();
+            }else if(acht.equals(combinatie)){
+                pr.achtOpAcht();
+                canvas.getDataPreset();
             }
             }
         
