@@ -64,14 +64,14 @@ public class InputWH extends JFrame {
         
         controls.add(heightField);
         p.add(controls, BorderLayout.CENTER);
-        JOptionPane.showMessageDialog(null, p, "Enter Canvas Width and Height",
+        JOptionPane j = new JOptionPane();
+        j.showMessageDialog(null, p, "Enter Canvas Width and Height",
                 JOptionPane.QUESTION_MESSAGE);
-        
         try {
             width = Integer.parseInt(widthField.getText()) + 2;
             height = Integer.parseInt(heightField.getText()) + 2;
             if (width < 900 || height < 800) {
-                JOptionPane.showMessageDialog(null, p,
+                j.showMessageDialog(null, p,
                         "W:900,H:800 Minimum required", JOptionPane.ERROR_MESSAGE);
             }
             draw.setWH(width, height);
@@ -81,7 +81,7 @@ public class InputWH extends JFrame {
                 Logger.getLogger(InputWH.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(null, p,
+            j.showMessageDialog(null, p,
                     "Please enter valid number!", JOptionPane.ERROR_MESSAGE);
         }
     }

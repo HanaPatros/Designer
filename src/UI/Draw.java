@@ -47,6 +47,7 @@ public class Draw extends JFrame{
     
     DefaultListModel<String> model = new DefaultListModel<>();
     DefaultComboBoxModel model2 = new DefaultComboBoxModel();
+    DefaultComboBoxModel model3 = new DefaultComboBoxModel();
     JLabel coordinaten, lblX, lblY, lblHeight, lblWidth;
     JTextField inputX, inputY, inputHeight, inputWidth;
     int test, x, y, width1, height1;
@@ -56,6 +57,7 @@ public class Draw extends JFrame{
     JList list = new JList();
     JList lstDesk= new JList();
     List<String> desk;
+    List<String> presets;
     JsonService json;
     Canvas canvas;
     Color color = Color.WHITE;
@@ -83,6 +85,7 @@ public class Draw extends JFrame{
     
      public Draw(){
        putDesk();
+       preset();
        
     }
 
@@ -196,6 +199,11 @@ public class Draw extends JFrame{
                     Logger.getLogger(Draw.class.getName()).log(Level.SEVERE, null, ex);
                 }
                         
+            }else if(event.getSource() == cmbPreset){
+                String vier = "4x4";
+                if(vier.equals(cmbPreset.getSelectedItem().toString())){
+                
+            }
             }
         
         }
@@ -327,6 +335,7 @@ public class Draw extends JFrame{
         Gebouwen = new JButton("Gebouwen");
         Gebouwen.addActionListener(listener);
         
+        
 
         box.add(Box.createVerticalStrut(40));
         box1.add(thicknessSlider, BorderLayout.NORTH);
@@ -361,6 +370,14 @@ public class Draw extends JFrame{
         //panel.add(Aanmaken);
         panel.add(Gebouwen);
         panel.setBackground(Color.DARK_GRAY);
+        
+       
+        for(int i = 0; i < presets.size();i++){
+            model3.addElement(presets.get(i));
+        }
+        cmbPreset = new JComboBox(model3);
+        cmbPreset.addActionListener(listener);
+        panel.add(cmbPreset);
 
         coordinaten = new JLabel();
         lblX = new JLabel("X: ");
@@ -466,6 +483,13 @@ public class Draw extends JFrame{
     return desk;
     
     }
+    public List<String>preset(){
+    presets = new ArrayList();
+    presets.add("2x2");
+    presets.add("4x4");
+    presets.add("8x8");
+    return presets;
+    }
     public List<String> getDesk1() {
         return desk;
     }
@@ -481,6 +505,15 @@ public class Draw extends JFrame{
     public void setValue(String value) {
         this.value = value;
     }
+
+    public List<String> getPresets() {
+        return presets;
+    }
+
+    public void setPresets(List<String> presets) {
+        this.presets = presets;
+    }
+    
 
     
 }
