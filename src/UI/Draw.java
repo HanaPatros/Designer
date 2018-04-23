@@ -78,7 +78,7 @@ public class Draw extends JFrame{
     private JSlider thicknessSlider;
     private int width, height;
     String value;
-    JComboBox cmbDesk;
+    JComboBox cmbDesk, cmbPreset;
     
     
      public Draw(){
@@ -317,7 +317,7 @@ public class Draw extends JFrame{
         Aanmaken.setFont(new Font("serif", Font.BOLD, 20));
         Aanmaken.setBackground(Color.DARK_GRAY);
         Aanmaken.setForeground(Color.WHITE);
-        this.getRootPane().setDefaultButton(Aanmaken);
+        frame.getRootPane().setDefaultButton(Aanmaken);
 //        flexOphalen = new JButton("Desk ophalen");
 //        flexOphalen.setBackground(Color.DARK_GRAY);
 //        flexOphalen.setForeground(Color.GRAY);
