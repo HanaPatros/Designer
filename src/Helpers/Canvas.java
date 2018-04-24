@@ -428,7 +428,7 @@ public class Canvas extends JComponent {
         em.getTransaction().begin();
 
         try {
-            // em.detach(stage);
+            // em.detach(cd);
             em.merge(cd);
             em.getTransaction().commit();
 
@@ -460,6 +460,39 @@ public class Canvas extends JComponent {
 
         em.close();
     }
+    
+    public void verwijderen(String deskId ){
+        
+        if (!em.isOpen()) {
+            em = emf.createEntityManager();
+        }
+        em.getTransaction().begin();
+
+
+        try {
+            Coordinaat coord = em.createQuery("SELECT d FROM Coordinaat d WHERE d.deskId = :deskId  ", Coordinaat.class).setParameter("deskId", deskId).getSingleResult();
+            Query query = em.createQuery("DELETE FROM Coordinaat c WHERE c.id = :coord", Coordinaat.class).setParameter("coord", coord.getId());
+            query.executeUpdate();
+            em.getTransaction().commit();
+            clear();
+            coordinaten = new ArrayList<>();
+            List<Coordinaat> coordinaten = (List<Coordinaat>) em.createQuery("SELECT t FROM Coordinaat t ").getResultList(); 
+            for(Coordinaat cd: coordinaten){
+            setRechthoeken(cd.getX1(), cd.getY1(), cd.getWidth1(), cd.getHeight1());
+            }
+        } catch (Exception ex) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
+
+        
+        
+        //getData();
+        //repaint();
+
+       
+    }
 
     public List<String> getLst() {
         return lst;
@@ -479,6 +512,19 @@ public class Canvas extends JComponent {
         cd.deskId = deskId;
         repaint();
         opslaan2();
+    }
+    public void setRechthoeken(int x, int y, int width, int height) {
+        
+        
+        Graphics2D g2d = (Graphics2D) img.getGraphics();
+
+        g2d.setColor(Color.orange);
+
+        g2d.fillRect(x, y, width, height);
+        
+        
+        repaint();
+        
     }
     
     public void getDataPreset(){
