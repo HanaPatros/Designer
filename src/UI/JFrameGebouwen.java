@@ -2,14 +2,12 @@ package UI;
 
 import Helpers.Canvas;
 import Model.Building;
-import Model.Department;
 import Model.Floor;
 import Service.JsonService;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -112,22 +110,22 @@ public class JFrameGebouwen extends javax.swing.JFrame {
     }    
 
     public void fillJlist() throws IOException {
-        List<Department> departments = new ArrayList();
-        departments = json.getAllDepartments();
-        for (int i = 0; i < departments.size(); i++) {
-            if(departments.get(i).getFloorId().equals(selectedFloorId)){
+        List<Floor> floors = new ArrayList();
+        floors = json.getAllFloors();
+        for (int i = 0; i < floors.size(); i++) {
+            
                 
-                listModel.addElement(departments.get(i).getDepartmentId());
-                listModel.addElement(departments.get(i).getName());
-            }
+                listModel.addElement(floors.get(i).getBuildings().getName());
+                listModel.addElement(floors.get(i).getName());
+                listModel.addElement(" ");
+                
         }
 
-            //list1 = new JList(listModel);
             jlistVerdiepingen.setModel(listModel);
             jlistVerdiepingen.setSelectedIndex(0);
             jlistVerdiepingen.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-            jlistVerdiepingen.setLayoutOrientation(JList.VERTICAL_WRAP);
-            //jlistVerdiepingen.setVisibleRowCount(-1);
+            //jlistVerdiepingen.setLayoutOrientation(JList.VERTICAL_WRAP);
+            jlistVerdiepingen.setVisibleRowCount(-1);
 
     }
 

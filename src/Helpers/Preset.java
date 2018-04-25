@@ -26,7 +26,7 @@ public class Preset {
     private int width;
     private int height;
     private String desk;
-    Canvas canvas;
+    
 
 
     
@@ -67,8 +67,7 @@ public class Preset {
         desk15();
         desk16();
     }
-    public void desk1(){
-        canvas = new Canvas();
+    public void desk1(){        
         x = 10;
         y = 10;
         width = 150;

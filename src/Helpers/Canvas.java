@@ -33,6 +33,8 @@ import javax.swing.JComponent;
 import javax.swing.event.MouseInputAdapter;
 import Model.Floor;
 import Model.Building;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static javafx.scene.paint.Color.color;
 import static javafx.scene.paint.Color.color;
 import javax.persistence.Query;
@@ -356,8 +358,8 @@ public class Canvas extends JComponent {
             Graphics2D g2d = (Graphics2D) img.getGraphics();
 
             g2d.setColor(Color.orange);
-
             g2d.fill3DRect(x, y, width, height, true);
+          
 
         }
 
