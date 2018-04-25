@@ -1,7 +1,5 @@
 package UI;
 
-
-
 import Helpers.Canvas;
 import Helpers.Preset;
 import Service.JsonService;
@@ -42,10 +40,8 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
+public class Draw extends JFrame {
 
-public class Draw extends JFrame{
-    
-    
     DefaultListModel<String> model = new DefaultListModel<>();
     DefaultComboBoxModel model2 = new DefaultComboBoxModel();
     DefaultComboBoxModel model3 = new DefaultComboBoxModel();
@@ -56,7 +52,7 @@ public class Draw extends JFrame{
     Building bld = new Building();
     List<Building> bl = new ArrayList();
     JList list = new JList();
-    JList lstDesk= new JList();
+    JList lstDesk = new JList();
     List<String> desk;
     List<String> presets;
     JsonService json;
@@ -67,7 +63,7 @@ public class Draw extends JFrame{
             colorPicker, magentaButton, grayButton, orangeButton, yellowButton,
             pinkButton, cyanButton, lightGrayButton, saveButton, loadButton,
             saveAsButton, rectangle, pencil, undoButton, redoButton, Aanmaken, flexOphalen,
-            Gebouwen;
+            Gebouwen, Verwijderen;
     private JFileChooser fileChooser;
     private File file;
     private Icon save = new ImageIcon(getClass().getResource("/./demo/save.png"));
@@ -76,25 +72,20 @@ public class Draw extends JFrame{
     private Icon redo = new ImageIcon(getClass().getResource("/./demo/redo.png"));
     private Icon pencilIcon = new ImageIcon(getClass()
             .getResource("/./demo/pencil.png"));
-    private Icon rect = new ImageIcon(getClass().getResource("/./demo/rect.png"));
+    private Icon rect = new ImageIcon(getClass().getResource("/./demo/desk.png"));
     private int saveCounter = 0;
     private JLabel filenameBar, thicknessStat;
     private JSlider thicknessSlider;
     private int width, height;
     String value;
     JComboBox cmbDesk, cmbPreset;
-    
-    
-     public Draw(){
-       putDesk();
-       preset();
-       
+
+    public Draw() {
+        putDesk();
+        preset();
+
     }
 
-   
-
-     
-    
     ChangeListener thick = new ChangeListener() {
         public void stateChanged(ChangeEvent e) {
             thicknessStat.setText(String.format("%s",
@@ -108,7 +99,7 @@ public class Draw extends JFrame{
         public void actionPerformed(ActionEvent event) {
             if (event.getSource() == clearButton) {
                 canvas.clear();
-                 canvas.remove();
+                canvas.remove();
             } else if (event.getSource() == blackButton) {
                 canvas.black();
             } else if (event.getSource() == blueButton) {
@@ -171,7 +162,14 @@ public class Draw extends JFrame{
                 }
                 canvas.picker(color);
             } else if (event.getSource() == rectangle) {
+                if (value == null) {
+                    javax.swing.JOptionPane.showMessageDialog(null, "Opgelet: U hebt geen desk geselecteerd!",
+                            "                                                        Foutbericht",
+                            javax.swing.JOptionPane.ERROR_MESSAGE);
+
+                } else {
                 canvas.rect();
+                }
 
             } else if (event.getSource() == pencil) {
                 canvas.pencil();
@@ -181,45 +179,61 @@ public class Draw extends JFrame{
                 int y = Integer.parseInt(inputY.getText());
                 int width1 = Integer.parseInt(inputWidth.getText());
                 int height1 = Integer.parseInt(inputHeight.getText());
-                //value = lstDesk.getSelectedValue().toString();     
-                value = cmbDesk.getSelectedItem().toString();
+                //value = lstDesk.getSelectedValue().toString();  
+                if (value == null) {
+                    javax.swing.JOptionPane.showMessageDialog(null, "Opgelet: U hebt geen desk geselecteerd!",
+                            "                                                        Foutbericht",
+                            javax.swing.JOptionPane.ERROR_MESSAGE);
 
-                canvas.setRechthoek(x, y, width1, height1, value);
-                clearInput();
-                
-            } else if(event.getSource() == cmbDesk){
+                } else {
+                    value = cmbDesk.getSelectedItem().toString();
+
+                    canvas.setRechthoek(x, y, width1, height1, value);
+                    clearInput();
+                }
+
+            } else if (event.getSource() == cmbDesk) {
                 //value = lstDesk.getSelectedValue().toString(); 
                 value = cmbDesk.getSelectedItem().toString();
                 canvas.setGegeven(value);
-              
-            }else if(event.getSource() == Gebouwen){
+
+            } else if (event.getSource() == Gebouwen) {
                 try {
-                    JFrameGebouwen jf= new JFrameGebouwen();
+                    JFrameGebouwen jf = new JFrameGebouwen();
                     jf.setVisible(true);
-                   // jf.enable(true);
+                    // jf.enable(true);
                 } catch (IOException ex) {
                     Logger.getLogger(Draw.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                        
-            }else if(event.getSource() == cmbPreset){
+
+            } else if (event.getSource() == cmbPreset) {
                 String twee = "2x2";
                 String vier = "4x4";
                 String acht = "8x8";
                 String combinatie = cmbPreset.getSelectedItem().toString();
                 pr = new Preset();
-                if(vier.equals(combinatie)){
-                
-                pr.vierOpVier();
-                canvas.getDataPreset();
-            }else if(twee.equals(combinatie)){
-                pr.tweeOpTwee();
-                canvas.getDataPreset();
-            }else if(acht.equals(combinatie)){
-                pr.achtOpAcht();
-                canvas.getDataPreset();
+                if (vier.equals(combinatie)) {
+
+                    pr.vierOpVier();
+                    canvas.getDataPreset();
+                } else if (twee.equals(combinatie)) {
+                    pr.tweeOpTwee();
+                    canvas.getDataPreset();
+                } else if (acht.equals(combinatie)) {
+                    pr.achtOpAcht();
+                    canvas.getDataPreset();
+                }
+            } else if (event.getSource() == Verwijderen) {
+                if (value == null) {
+                    javax.swing.JOptionPane.showMessageDialog(null, "Opgelet: U hebt geen desk geselecteerd!",
+                            "                                                        Foutbericht",
+                            javax.swing.JOptionPane.ERROR_MESSAGE);
+
+                } else {
+                    canvas.verwijderen(value.toString());
+                }
             }
-            }
-        
+
         }
     };
 
@@ -227,7 +241,6 @@ public class Draw extends JFrame{
         this.width = width;
         this.height = height;
     }
-    
 
     public void openPaint() throws ClassNotFoundException {
         for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -243,8 +256,7 @@ public class Draw extends JFrame{
                 break;
             }
         }
-        
-        
+
         JFrame frame = new JFrame("Paint (" + width + "X" + height + ")");
 
         Container container = frame.getContentPane();
@@ -264,7 +276,7 @@ public class Draw extends JFrame{
         pencil.setPreferredSize(new Dimension(40, 40));
         pencil.addActionListener(listener);
         rectangle = new JButton(rect);
-        rectangle.setPreferredSize(new Dimension(40, 40));
+        rectangle.setPreferredSize(new Dimension(65, 55));
         rectangle.addActionListener(listener);
         thicknessSlider = new JSlider(JSlider.HORIZONTAL, 0, 50, 1);
         thicknessSlider.setMajorTickSpacing(25);
@@ -322,34 +334,59 @@ public class Draw extends JFrame{
         lightGrayButton.setPreferredSize(new Dimension(40, 40));
         lightGrayButton.addActionListener(listener);
         saveButton = new JButton(save);
+        saveButton.setFont(new Font("serif", Font.BOLD, 20));
+        saveButton.setBackground(Color.DARK_GRAY);
+        saveButton.setForeground(Color.WHITE);
         saveButton.addActionListener(listener);
         saveAsButton = new JButton("Save As");
+        saveAsButton.setFont(new Font("serif", Font.BOLD, 20));
+        saveAsButton.setBackground(Color.DARK_GRAY);
+        saveAsButton.setForeground(Color.WHITE);
         saveAsButton.addActionListener(listener);
         loadButton = new JButton("Load");
+        loadButton.setFont(new Font("serif", Font.BOLD, 20));
+        loadButton.setBackground(Color.DARK_GRAY);
+        loadButton.setForeground(Color.WHITE);
         loadButton.addActionListener(listener);
         colorPicker = new JButton("Color Picker");
+        colorPicker.setFont(new Font("serif", Font.BOLD, 20));
+        colorPicker.setBackground(Color.DARK_GRAY);
+        colorPicker.setForeground(Color.WHITE);
         colorPicker.addActionListener(listener);
         clearButton = new JButton("Clear");
+        clearButton.setFont(new Font("serif", Font.BOLD, 20));
+        clearButton.setBackground(Color.DARK_GRAY);
+        clearButton.setForeground(Color.WHITE);
         clearButton.addActionListener(listener);
 
         filenameBar = new JLabel("No file");
+        filenameBar.setFont(new Font("serif", Font.BOLD, 20));
+        filenameBar.setFont(new Font("serif", Font.BOLD, 20));
+        filenameBar.setForeground(Color.WHITE);
+        filenameBar.setForeground(Color.WHITE);
         thicknessStat = new JLabel("1");
-        Aanmaken = new JButton("Aanmaken");
-        Aanmaken.addActionListener(listener);
+        Aanmaken = new JButton("Aanmaken");        
         Aanmaken.setFont(new Font("serif", Font.BOLD, 20));
         Aanmaken.setBackground(Color.DARK_GRAY);
         Aanmaken.setForeground(Color.WHITE);
+        Aanmaken.addActionListener(listener);
         frame.getRootPane().setDefaultButton(Aanmaken);
+        Verwijderen = new JButton("Verwijder desk");
+        Verwijderen.setFont(new Font("serif", Font.BOLD, 20));
+        Verwijderen.setBackground(Color.DARK_GRAY);
+        Verwijderen.setForeground(Color.WHITE);
+        Verwijderen.addActionListener(listener);
 //        flexOphalen = new JButton("Desk ophalen");
 //        flexOphalen.setBackground(Color.DARK_GRAY);
 //        flexOphalen.setForeground(Color.GRAY);
 //        flexOphalen.setFont(new Font("serif", Font.BOLD, 20));
 //        flexOphalen.addActionListener(listener);
-        
+
         Gebouwen = new JButton("Gebouwen");
+        Gebouwen.setFont(new Font("serif", Font.BOLD, 20));
+        Gebouwen.setBackground(Color.DARK_GRAY);
+        Gebouwen.setForeground(Color.WHITE);
         Gebouwen.addActionListener(listener);
-        
-        
 
         box.add(Box.createVerticalStrut(40));
         box1.add(thicknessSlider, BorderLayout.NORTH);
@@ -362,8 +399,6 @@ public class Draw extends JFrame{
         box.add(redoButton, BorderLayout.NORTH);
         box.add(Box.createVerticalStrut(5));
         box.add(pencil, BorderLayout.NORTH);
-        
-        
 
         panel.add(greenButton);
         panel.add(blueButton);
@@ -381,39 +416,44 @@ public class Draw extends JFrame{
         panel.add(loadButton);
         panel.add(colorPicker);
         panel.add(clearButton);
+        panel.add(Verwijderen);
+
         //panel.add(Aanmaken);
         panel.add(Gebouwen);
         panel.setBackground(Color.DARK_GRAY);
-        
-       
-        for(int i = 0; i < presets.size();i++){
+
+        for (int i = 0; i < presets.size(); i++) {
             model3.addElement(presets.get(i));
         }
         cmbPreset = new JComboBox(model3);
+        cmbPreset.setFont(new Font("serif", Font.BOLD, 20));
         cmbPreset.addActionListener(listener);
         panel.add(cmbPreset);
 
         coordinaten = new JLabel();
         lblX = new JLabel("X: ");
         lblX.setForeground(Color.WHITE);
-        lblX.setFont(new Font("Serif", Font.PLAIN, 14));
+        lblX.setFont(new Font("Serif", Font.PLAIN, 24));
         inputX = new JTextField();
+        inputX.setFont(new Font("Serif", Font.CENTER_BASELINE, 24));
 
         lblY = new JLabel("Y: ");
         lblY.setForeground(Color.WHITE);
-        lblY.setFont(new Font("Serif", Font.PLAIN, 14));
+        lblY.setFont(new Font("Serif", Font.PLAIN, 24));
         inputY = new JTextField();
+        inputY.setFont(new Font("Serif", Font.CENTER_BASELINE, 24));
 
         lblWidth = new JLabel("Width: ");
         lblWidth.setForeground(Color.WHITE);
-        lblWidth.setFont(new Font("Serif", Font.PLAIN, 14));
+        lblWidth.setFont(new Font("Serif", Font.PLAIN, 24));
         inputWidth = new JTextField();
+        inputWidth.setFont(new Font("Serif", Font.CENTER_BASELINE, 24));
 
         lblHeight = new JLabel("Height: ");
         lblHeight.setForeground(Color.WHITE);
-        lblHeight.setFont(new Font("Serif", Font.PLAIN, 14));
+        lblHeight.setFont(new Font("Serif", Font.PLAIN, 24));
         inputHeight = new JTextField();
-
+        inputHeight.setFont(new Font("Serif", Font.CENTER_BASELINE, 24));
 
         //leest list van desks uit
 //        for (int i = 0; i < desk.size(); i++) {
@@ -423,8 +463,6 @@ public class Draw extends JFrame{
 //        lstDesk.setVisibleRowCount(-1);
 //        JScrollPane sp = new JScrollPane(lstDesk);
 //        lstDesk.setPreferredSize(new Dimension(150, 200));
-        
-        
         for (int i = 0; i < desk.size(); i++) {
             model2.addElement(desk.get(i));
         }
@@ -432,9 +470,9 @@ public class Draw extends JFrame{
         cmbDesk.setFont(new Font("serif", Font.BOLD, 20));
         cmbDesk.addActionListener(listener);
         box.add(cmbDesk, BorderLayout.NORTH);
-       //box.add(lstDesk, BorderLayout.NORTH);
-       
-       //box.add(flexOphalen, BorderLayout.NORTH);
+        //box.add(lstDesk, BorderLayout.NORTH);
+
+        //box.add(flexOphalen, BorderLayout.NORTH);
         box.add(Box.createVerticalStrut(5));
         box.add(rectangle, BorderLayout.WEST);
         box.add(Box.createVerticalStrut(30));
@@ -448,7 +486,7 @@ public class Draw extends JFrame{
         box.add(inputWidth, BorderLayout.NORTH);
         box.add(lblHeight, BorderLayout.NORTH);
         box.add(inputHeight, BorderLayout.NORTH);
-        
+
         //box.setBackground(Color.DARK_GRAY);
         container.add(panel, BorderLayout.NORTH);
         container.add(panel1, BorderLayout.SOUTH);
@@ -458,13 +496,12 @@ public class Draw extends JFrame{
 
         frame.setVisible(true);
         frame.getContentPane().setBackground(Color.DARK_GRAY);
-        frame.setSize(width + 79, height + 11);        
+        frame.setSize(width + 79, height + 11);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null); 
-        
+        frame.setLocationRelativeTo(null);
 
     }
-    
+
     //constructor voor rechthoek
     public void addRect() {
         int x = Integer.parseInt(inputX.getText());
@@ -476,34 +513,48 @@ public class Draw extends JFrame{
         canvas.setRechthoek(x, y, width1, height1, value);
     }
 
-    public void clearInput(){
+    public void clearInput() {
         inputX.setText("");
         inputY.setText("");
         inputWidth.setText("");
         inputHeight.setText("");
     }
-    
+
     //maakt desks aan voor lstDesk
-    public List<String>putDesk(){
-    desk = new ArrayList();
-    desk.add("desk1");
-    desk.add("desk2");
-    desk.add("desk3");
-    desk.add("desk4");
-    desk.add("desk5");
-    desk.add("desk6");
-    desk.add("desk7");
-    desk.add("desk8");
-    return desk;
-    
+    public List<String> putDesk() {
+        desk = new ArrayList();
+        desk.add("Selecteer een desk ...");
+        desk.add("desk1");
+        desk.add("desk2");
+        desk.add("desk3");
+        desk.add("desk4");
+        desk.add("desk5");
+        desk.add("desk6");
+        desk.add("desk7");
+        desk.add("desk8");
+        desk.add("desk9");
+        desk.add("desk10");
+        desk.add("desk11");
+        desk.add("desk12");
+        desk.add("desk13");
+        desk.add("desk14");
+        desk.add("desk15");
+        desk.add("desk16");
+        desk.add("desk17");
+        desk.add("desk18");
+        return desk;
+
     }
-    public List<String>preset(){
-    presets = new ArrayList();
-    presets.add("2x2");
-    presets.add("4x4");
-    presets.add("8x8");
-    return presets;
+
+    public List<String> preset() {
+        presets = new ArrayList();
+        presets.add("Selecteer een opstelling ...");
+        presets.add("2x2");
+        presets.add("4x4");
+        presets.add("8x8");
+        return presets;
     }
+
     public List<String> getDesk1() {
         return desk;
     }
@@ -527,7 +578,5 @@ public class Draw extends JFrame{
     public void setPresets(List<String> presets) {
         this.presets = presets;
     }
-    
 
-    
 }
