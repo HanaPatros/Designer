@@ -16,14 +16,10 @@ import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
-import java.util.stream.Collectors;
-import javax.ws.rs.client.Client;
 
 /**
  *
@@ -47,7 +43,7 @@ public class JsonService {
 
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
         return verdiep;
     }
@@ -63,7 +59,7 @@ public class JsonService {
 // System.out.println("gebouwen");
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
         return (List<Building>) gebouwen;
 
@@ -76,7 +72,6 @@ public class JsonService {
             verdiepingen = mapper.readValue(new URL("http://flexdeskapplication.azurewebsites.net/api/Floor/"), mapper.getTypeFactory().constructCollectionType(List.class, Floor.class));
             
         } catch (MalformedURLException ex) {
-            ex.printStackTrace();
         }
         return (List<Floor>) verdiepingen;
     }
@@ -86,7 +81,6 @@ public class JsonService {
         try{
             departments = mapper.readValue(new URL("http://flexdeskapplication.azurewebsites.net/api/Department"), mapper.getTypeFactory().constructCollectionType(List.class, Department.class));
         }catch (MalformedURLException ex) {
-            ex.printStackTrace();
         }
         return (List<Department>) departments;
     }

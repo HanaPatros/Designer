@@ -32,16 +32,10 @@ import javax.persistence.Persistence;
 import javax.swing.JComponent;
 import javax.swing.event.MouseInputAdapter;
 import Model.Floor;
-import Model.Building;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import static javafx.scene.paint.Color.color;
-import static javafx.scene.paint.Color.color;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.swing.JFrame;
 
-public class Canvas extends JComponent {
+public final class Canvas extends JComponent {
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("DesigntoolPU");
     EntityManager em = emf.createEntityManager();
@@ -50,7 +44,8 @@ public class Canvas extends JComponent {
     private int X1, Y1, X2, Y2;
     int x, y, width, height;
     private Graphics2D g;
-    private Image img, background, undoTemp, redoTemp;
+    Image img, undoTemp, redoTemp;
+    Image background;
     ArrayList<Shape> shapes = new ArrayList<Shape>();
     private final SizedStack<Image> undoStack = new SizedStack<>(12);
     private final SizedStack<Image> redoStack = new SizedStack<>(12);
@@ -64,8 +59,10 @@ public class Canvas extends JComponent {
     List<String> lst;
     String gegeven;
     Floor floor;
-    Draw draw1 = new Draw();
+    //Draw draw1 = new Draw();
     //List<String> svg = new ArrayList<>();
+    Graphics2D g2d;
+    Color color;
 
     public void save(File file) {
         try {
@@ -127,11 +124,13 @@ public class Canvas extends JComponent {
         getData();
         floor = new Floor();
         floor.setSVG(lst.toString());
+        
     }
 
     public void defaultListener() {
         setDoubleBuffered(false);
         listener = new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent e) {
                 saveToStack(img);
                 X2 = e.getX();
@@ -140,6 +139,7 @@ public class Canvas extends JComponent {
         };
 
         motion = new MouseMotionAdapter() {
+            @Override
             public void mouseDragged(MouseEvent e) {
                 X1 = e.getX();
                 Y1 = e.getY();
@@ -216,6 +216,7 @@ public class Canvas extends JComponent {
             g.setPaint(color);
         }
     }
+    
 
     public void clear() {
         int yZ = 1;
@@ -266,8 +267,6 @@ public class Canvas extends JComponent {
             em.getTransaction().commit();
 
         } catch (Exception e) {
-            e.printStackTrace();
-
         } finally {
             em.close();
         }
@@ -337,12 +336,16 @@ public class Canvas extends JComponent {
 
     class MyMouseListener extends MouseInputAdapter {
 
+        @Override
         public void mousePressed(MouseEvent e) {
             startPoint = e.getPoint();
             shape = new Rectangle();
 
         }
+        
+       
 
+        @Override
         public void mouseDragged(MouseEvent e) {
 
             x = Math.min(startPoint.x, e.getX());
@@ -353,16 +356,20 @@ public class Canvas extends JComponent {
 
             height = Math.abs(startPoint.y - e.getY());
 
-            // shape.setBounds(x, y, width, height);
+            
             repaint();
             Graphics2D g2d = (Graphics2D) img.getGraphics();
-
+           
+            
             g2d.setColor(Color.orange);
+            //g2d.setColor(kleur(color));
             g2d.fill3DRect(x, y, width, height, true);
           
 
         }
+        
 
+        @Override
         public void mouseReleased(MouseEvent e) {
             if (shape.width != 0 || shape.height != 0) {
                 addRectangle(shape, e.getComponent().getForeground());
@@ -493,6 +500,15 @@ public class Canvas extends JComponent {
         repaint();
         opslaan2();
     }
+    
+//     public Color kleur(Color color){
+//            g2d = (Graphics2D) img.getGraphics();
+//            
+//            if (color != null) {
+//            g2d.setPaint(color);
+//        }
+//            return color;
+//        }
 
     public void setRechthoeken(int x, int y, int width, int height) {
 
@@ -536,5 +552,15 @@ public class Canvas extends JComponent {
     public void setGegeven(String gegeven) {
         this.gegeven = gegeven;
     }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+    
+    
 
 }

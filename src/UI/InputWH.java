@@ -2,7 +2,6 @@ package UI;
 
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.logging.Level;
@@ -41,7 +40,7 @@ public class InputWH extends JFrame {
                         | IllegalAccessException
                         | UnsupportedLookAndFeelException e) {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+
                 }
                 break;
             }
@@ -64,14 +63,14 @@ public class InputWH extends JFrame {
         
         controls.add(heightField);
         p.add(controls, BorderLayout.CENTER);
-        JOptionPane j = new JOptionPane();
-        j.showMessageDialog(null, p, "Enter Canvas Width and Height",
+        
+        JOptionPane.showMessageDialog(null, p, "Enter Canvas Width and Height",
                 JOptionPane.QUESTION_MESSAGE);
         try {
             width = Integer.parseInt(widthField.getText()) + 2;
             height = Integer.parseInt(heightField.getText()) + 2;
             if (width < 900 || height < 800) {
-                j.showMessageDialog(null, p,
+                JOptionPane.showMessageDialog(null, p,
                         "W:900,H:800 Minimum required", JOptionPane.ERROR_MESSAGE);
             }
             draw.setWH(width, height);
@@ -81,7 +80,7 @@ public class InputWH extends JFrame {
                 Logger.getLogger(InputWH.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (IllegalArgumentException e) {
-            j.showMessageDialog(null, p,
+            JOptionPane.showMessageDialog(null, p,
                     "Please enter valid number!", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -93,7 +92,7 @@ public class InputWH extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new InputWH();                
+                InputWH inputWH = new InputWH();                
             }
         });
     }

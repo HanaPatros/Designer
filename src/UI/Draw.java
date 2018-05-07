@@ -39,7 +39,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
-public class Draw extends JFrame {
+public final class Draw extends JFrame {
 
     DefaultListModel<String> model = new DefaultListModel<>();
     DefaultComboBoxModel model2 = new DefaultComboBoxModel();
@@ -65,13 +65,13 @@ public class Draw extends JFrame {
             Gebouwen, Verwijderen;
     private JFileChooser fileChooser;
     private File file;
-    private Icon save = new ImageIcon(getClass().getResource("/./demo/save.png"));
+    private final Icon save = new ImageIcon(getClass().getResource("/./demo/save.png"));
 
-    private Icon undo = new ImageIcon(getClass().getResource("/./demo/undo.png"));
-    private Icon redo = new ImageIcon(getClass().getResource("/./demo/redo.png"));
-    private Icon pencilIcon = new ImageIcon(getClass()
+    private final Icon undo = new ImageIcon(getClass().getResource("/./demo/undo.png"));
+    private final Icon redo = new ImageIcon(getClass().getResource("/./demo/redo.png"));
+    private final Icon pencilIcon = new ImageIcon(getClass()
             .getResource("/./demo/pencil.png"));
-    private Icon rect = new ImageIcon(getClass().getResource("/./demo/desk.png"));
+    private final Icon rect = new ImageIcon(getClass().getResource("/./demo/desk.png"));
     private int saveCounter = 0;
     private JLabel filenameBar, thicknessStat;
     private JSlider thicknessSlider;
@@ -86,6 +86,7 @@ public class Draw extends JFrame {
     }
 
     ChangeListener thick = new ChangeListener() {
+        @Override
         public void stateChanged(ChangeEvent e) {
             thicknessStat.setText(String.format("%s",
                     thicknessSlider.getValue()));
@@ -95,6 +96,7 @@ public class Draw extends JFrame {
 
     ActionListener listener = new ActionListener() {
 
+        @Override
         public void actionPerformed(ActionEvent event) {
             if (event.getSource() == clearButton) {
                 canvas.clear();
@@ -229,7 +231,7 @@ public class Draw extends JFrame {
                             javax.swing.JOptionPane.ERROR_MESSAGE);
 
                 } else {
-                    canvas.verwijderen(value.toString());
+                    canvas.verwijderen(value);
                 }
             }
 
@@ -250,7 +252,7 @@ public class Draw extends JFrame {
                         | IllegalAccessException
                         | UnsupportedLookAndFeelException e) {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+
                 }
                 break;
             }
@@ -364,7 +366,7 @@ public class Draw extends JFrame {
         filenameBar.setForeground(Color.WHITE);
         filenameBar.setForeground(Color.WHITE);
         thicknessStat = new JLabel("1");
-        Aanmaken = new JButton("Aanmaken");        
+        Aanmaken = new JButton("Tekenen");        
         Aanmaken.setFont(new Font("serif", Font.BOLD, 20));
         Aanmaken.setBackground(Color.DARK_GRAY);
         Aanmaken.setForeground(Color.WHITE);
@@ -381,7 +383,7 @@ public class Draw extends JFrame {
 //        flexOphalen.setFont(new Font("serif", Font.BOLD, 20));
 //        flexOphalen.addActionListener(listener);
 
-        Gebouwen = new JButton("Gebouwen");
+        Gebouwen = new JButton("Open gebouwen");
         Gebouwen.setFont(new Font("serif", Font.BOLD, 20));
         Gebouwen.setBackground(Color.DARK_GRAY);
         Gebouwen.setForeground(Color.WHITE);

@@ -60,10 +60,10 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
     DefaultListModel listModelVerdiep;
     Building gebouw;
     Floor verdieping;
-    
+
     List<Building> gebouwen;
     List<Floor> verdiepingen;
-    
+
     JsonService json;
     Canvas canvas;
     Preset pr;
@@ -72,14 +72,14 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
     int getConvGebouwRow;
     private Object[] rowData;
     List<Floor> vloeren;
-    long gebouwId = 0;    
+    long gebouwId = 0;
     Long selectedFloorId;
     String svg;
-    InputWH ip ;
+    InputWH ip;
     public int width;
     public int height;
     List<String> desk;
-    List<String> presets;    
+    List<String> presets;
     DefaultComboBoxModel model2 = new DefaultComboBoxModel();
     DefaultComboBoxModel model3 = new DefaultComboBoxModel();
 //    JButton clearButton, blackButton, blueButton, greenButton, redButton,
@@ -101,19 +101,20 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
 //            .getResource("/./demo/pencil.png"));
 //    private final Icon rect = new ImageIcon(getClass().getResource("/./demo/desk.png"));
     private int saveCounter = 0;
-   // private JLabel filenameBar, thicknessStat;
+    // private JLabel filenameBar, thicknessStat;
     private JSlider thicknessSlider;
 //    JList lstDesk = new JList();
 //    JComboBox cmbDesk, cmbPreset;
+
     public JFrameGebouwen() throws IOException {
         this.setLocationRelativeTo(null);
-        this.setSize(2000,2000);
+        this.setSize(2000, 2000);
         this.setDefaultCloseOperation(JFrameGebouwen.EXIT_ON_CLOSE);
         this.listModelVerdiep = new DefaultListModel<String>();
         this.listModel2 = new DefaultListModel<String>();
         this.listModel = new DefaultListModel<String>();
         initComponents();
-        this.setLocationRelativeTo(null); 
+        this.setLocationRelativeTo(null);
         this.getContentPane().setBackground(Color.DARK_GRAY);
         gebouwen = new ArrayList();
         json = new JsonService();
@@ -121,17 +122,16 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         gebouwen = json.getAllBuildings();
         canvas = new Canvas();
         gebouw = new Building();
-        
+
         model = new DefaultTableModel();
         verdieping = new Floor();
         JTableHeader header = tblGebouw.getTableHeader();
         header.setFont(new Font("Dialog", Font.BOLD, 18));
-          
+
         verdiepingen = new ArrayList();
-        
-            
+
         vloeren = new ArrayList();
-        
+
         populateGebouwTabel();
         populateLSTSVG();
         //ip = new InputWH();
@@ -146,12 +146,12 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
     public void setRow(int row) {
         this.row = row;
     }
-    
-    public void populateLSTSVG(){
+
+    public void populateLSTSVG() {
         List<String> lst = canvas.getLst();
         listModel2.addElement(lst);
         lstSVG.setModel(listModel2);
-        lstSVG.setLayoutOrientation(JList.VERTICAL_WRAP);    
+        lstSVG.setLayoutOrientation(JList.VERTICAL_WRAP);
     }
 
     public void populateGebouwTabel() throws IOException {
@@ -171,25 +171,24 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
 
         model.fireTableDataChanged();
 
-    }    
+    }
 
     public void fillJlist() throws IOException {
         List<Floor> floors = new ArrayList();
         floors = json.getAllFloors();
         for (int i = 0; i < floors.size(); i++) {
-            
-                
-                listModel.addElement(floors.get(i).getBuildings().getName());
-                listModel.addElement(floors.get(i).getName());
-                listModel.addElement(" ");
-                
+
+            listModel.addElement(floors.get(i).getBuildings().getName());
+            listModel.addElement(floors.get(i).getName());
+            listModel.addElement(" ");
+
         }
 
-            jlistVerdiepingen.setModel(listModel);
-            jlistVerdiepingen.setSelectedIndex(0);
-            jlistVerdiepingen.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-           
-            jlistVerdiepingen.setVisibleRowCount(-1);
+        jlistVerdiepingen.setModel(listModel);
+        jlistVerdiepingen.setSelectedIndex(0);
+        jlistVerdiepingen.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+
+        jlistVerdiepingen.setVisibleRowCount(-1);
 
     }
 
@@ -252,10 +251,19 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
 
         jLayeredPane1.setBackground(new java.awt.Color(102, 102, 102));
 
+        jLabel3.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Width");
 
+        jLabel4.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Height");
 
+        widthField.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+
+        heightField.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Minimum width: 900 and height: 800");
 
         btnOK.setText("OK");
@@ -277,18 +285,17 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         jLayeredPane1Layout.setHorizontalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(heightField)
-                            .addComponent(widthField))))
+                .addGap(20, 20, 20)
+                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(heightField)
+                        .addComponent(widthField))
+                    .addComponent(btnOK, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
         jLayeredPane1Layout.setVerticalGroup(
@@ -306,7 +313,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnOK)
-                .addGap(28, 28, 28))
+                .addGap(25, 25, 25))
         );
 
         javax.swing.GroupLayout JInputWHLayout = new javax.swing.GroupLayout(JInputWH.getContentPane());
@@ -322,11 +329,9 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
             JInputWHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JInputWHLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLayeredPane1)
-                .addContainerGap())
+                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(44, Short.MAX_VALUE))
         );
-
-        JDraw.setTitle("\"Paint (\" + width + \"X\" + height + \")\"");
 
         Verwijderen.setText("Verwijderen");
 
@@ -358,6 +363,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
 
         lblHeight.setText("Height:");
 
+        filenameBar.setBackground(new java.awt.Color(153, 153, 153));
         filenameBar.setText("no file");
 
         javax.swing.GroupLayout JDrawLayout = new javax.swing.GroupLayout(JDraw.getContentPane());
@@ -365,23 +371,25 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         JDrawLayout.setHorizontalGroup(
             JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JDrawLayout.createSequentialGroup()
-                .addGap(164, 164, 164)
-                .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblHeight)
+                .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JDrawLayout.createSequentialGroup()
-                        .addComponent(Verwijderen)
-                        .addGap(44, 44, 44)
-                        .addComponent(Aanmaken)))
+                        .addGap(164, 164, 164)
+                        .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblHeight)
+                            .addGroup(JDrawLayout.createSequentialGroup()
+                                .addComponent(Verwijderen)
+                                .addGap(44, 44, 44)
+                                .addComponent(Aanmaken))))
+                    .addGroup(JDrawLayout.createSequentialGroup()
+                        .addGap(154, 154, 154)
+                        .addComponent(rectangle)
+                        .addGap(31, 31, 31)
+                        .addComponent(saveButton)))
                 .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JDrawLayout.createSequentialGroup()
                         .addGap(36, 36, 36)
-                        .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Gebouwen)
-                            .addGroup(JDrawLayout.createSequentialGroup()
-                                .addComponent(rectangle)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(saveButton)))
-                        .addGap(17, 17, 17)
+                        .addComponent(Gebouwen)
+                        .addGap(46, 46, 46)
                         .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cmbPreset, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cmbDesk, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -420,28 +428,32 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         JDrawLayout.setVerticalGroup(
             JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JDrawLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Verwijderen)
-                    .addComponent(Aanmaken)
-                    .addComponent(Gebouwen)
-                    .addComponent(cmbDesk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(colorPicker)
-                    .addComponent(saveAsButton))
                 .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JDrawLayout.createSequentialGroup()
-                        .addGap(1, 1, 1)
+                        .addContainerGap()
                         .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmbPreset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(clearButton)
-                            .addComponent(rectangle)))
+                            .addComponent(Verwijderen)
+                            .addComponent(Aanmaken)
+                            .addComponent(Gebouwen)
+                            .addComponent(cmbDesk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(colorPicker)
+                            .addComponent(saveAsButton))
+                        .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(JDrawLayout.createSequentialGroup()
+                                .addGap(2, 2, 2)
+                                .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(cmbPreset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(clearButton)))
+                            .addGroup(JDrawLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(loadButton))
+                            .addGroup(JDrawLayout.createSequentialGroup()
+                                .addGap(35, 35, 35)
+                                .addComponent(saveButton))))
                     .addGroup(JDrawLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(loadButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JDrawLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saveButton)))
-                .addGap(86, 86, 86)
+                        .addGap(69, 69, 69)
+                        .addComponent(rectangle)))
+                .addGap(56, 56, 56)
                 .addComponent(inputX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JDrawLayout.createSequentialGroup()
@@ -660,11 +672,11 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
     }//GEN-LAST:event_tblGebouwMouseClicked
 
     private void btnDesignerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesignerActionPerformed
-           this.dispose();
-           this.JInputWH.setVisible(true);
-           this.JInputWH.setLocationRelativeTo(null); 
-           this.JInputWH.setSize(600, 200);
-           this.JInputWH.setDefaultCloseOperation(JInputWH.EXIT_ON_CLOSE);
+        this.dispose();
+        this.JInputWH.setVisible(true);
+        this.JInputWH.setLocationRelativeTo(null);
+        this.JInputWH.setSize(600, 200);
+        this.JInputWH.setDefaultCloseOperation(JInputWH.EXIT_ON_CLOSE);
 // InputWH ip = new InputWH(); 
 //            SwingUtilities.invokeLater(new Runnable() {            
 //            @Override
@@ -673,23 +685,23 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
 //            }
 //        });
 
-           //this.ip = new InputWH();    
-           //ip = new InputWH();
-           //ip.setVisible(true);
-           
+        //this.ip = new InputWH();    
+        //ip = new InputWH();
+        //ip.setVisible(true);
+
     }//GEN-LAST:event_btnDesignerActionPerformed
-    
+
     private void btnJsonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJsonActionPerformed
-    
+
         selectedFloorId = Long.parseLong(lstVerdiepingen.getSelectedValue());
         svg = canvas.getLst().toString();
-        Floor verdiep = new Floor();        
+        Floor verdiep = new Floor();
         Floor verdieping1 = new Floor();
 
         try {
-            
+
             verdieping1 = json.getFloorById(selectedFloorId);
-            
+
             verdiep.setName(verdieping1.getName());
             verdiep.setNumber(verdieping1.getNumber());
             verdiep.setFloorCode(verdieping1.getFloorCode());
@@ -698,39 +710,37 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
             verdiep.setBuildingId(verdieping1.getBuildingId());
 
             json.addFloorSVG(verdiep);
-            
-            
+
         } catch (IOException ex) {
             ex.getStackTrace();
         }
 
-        
+
     }//GEN-LAST:event_btnJsonActionPerformed
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        
-         try {
-         width = Integer.parseInt(widthField.getText()) + 2;
-         height = Integer.parseInt(heightField.getText()) + 2;
-         if (width < 900 || height < 800) {
-             JOptionPane.showMessageDialog(null,
-                    "W:900,H:800 Minimum required",
+
+        try {
+            width = Integer.parseInt(widthField.getText()) + 2;
+            height = Integer.parseInt(heightField.getText()) + 2;
+            if (width < 900 || height < 800) {
+                JOptionPane.showMessageDialog(null,
+                        "W:900,H:800 Minimum required",
+                        "                                Foutbericht",
+                        JOptionPane.ERROR_MESSAGE);
+
+            }
+        } catch (IllegalArgumentException e) {
+
+            JOptionPane.showMessageDialog(null,
+                    "Please enter valid number!",
                     "                                Foutbericht",
-                    JOptionPane.ERROR_MESSAGE);            
-             
-            }         
-         } catch (IllegalArgumentException e) {
-             
-                         JOptionPane.showMessageDialog(null,
-                "Please enter valid number!",
-                "                                Foutbericht",
-                JOptionPane.ERROR_MESSAGE);
-             
-         }
-         
-         JDraw();
-        
-         
+                    JOptionPane.ERROR_MESSAGE);
+
+        }
+
+        JDraw();
+
 //        Draw draw = new Draw();
 //
 //        try {
@@ -756,168 +766,156 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
 //           
 // 
 //        } catch (IllegalArgumentException e) {
-
 //        }
-
         this.JInputWH.dispose();
     }//GEN-LAST:event_btnOKActionPerformed
 
-    public void JInputWH(){
-        JInputWH.setBackground(Color.DARK_GRAY);
-         JInputWH.setForeground(Color.DARK_GRAY);
-        jLayeredPane1.setBackground(Color.DARK_GRAY);
+    public void JInputWH() {
+//        JInputWH.setBackground(Color.DARK_GRAY);
+//        JInputWH.setForeground(Color.DARK_GRAY);
+//        jLayeredPane1.setBackground(Color.DARK_GRAY);
         this.JInputWH.getRootPane().setDefaultButton(btnOK);
         this.JInputWH.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.JInputWH.setLocationRelativeTo(null);
+        Container container = this.JInputWH.getContentPane();
+        container.setBackground(Color.DARK_GRAY);
     }
-    
+
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
 
-    public void JDraw(){
+    public void JDraw() {
 
-         
-        Container container =  this.JDraw.getContentPane();
+        Container container = this.JDraw.getContentPane();
         container.setLayout(new BorderLayout());
         canvas = new Canvas();
         container.add(canvas, BorderLayout.CENTER);
-         
+
         JPanel panel = new JPanel();
         JPanel panel1 = new JPanel();
         Box box = Box.createVerticalBox();
         Box box1 = Box.createHorizontalBox();
         panel1.setLayout(new FlowLayout());
 
-
-        
-
-
-
-        filenameBar.setFont(new Font("serif", Font.BOLD, 20));        
-        filenameBar.setForeground(Color.WHITE);        
+        filenameBar.setBackground(Color.DARK_GRAY);
+        filenameBar.setFont(new Font("serif", Font.BOLD, 20));
+        filenameBar.setForeground(Color.WHITE);
         panel1.add(filenameBar);
 
+        panel.setBackground(Color.DARK_GRAY);
+        panel.add(saveButton);
+        saveButton.setFont(new Font("serif", Font.BOLD, 20));
+        saveButton.setBackground(Color.DARK_GRAY);
+        saveButton.setForeground(Color.WHITE);
+        saveButton.addActionListener(listener);
 
-         panel.setBackground(Color.DARK_GRAY);
-         panel.add(saveButton);
-         saveButton.setFont(new Font("serif", Font.BOLD, 20));
-         saveButton.setBackground(Color.DARK_GRAY);
-         saveButton.setForeground(Color.WHITE);
-         saveButton.addActionListener(listener);
-                 
-         panel.add(saveAsButton);
-         saveAsButton.setFont(new Font("serif", Font.BOLD, 20));
-         saveAsButton.setBackground(Color.DARK_GRAY);
-         saveAsButton.setForeground(Color.WHITE);
-         saveAsButton.addActionListener(listener);
-         
-         panel.add(loadButton);
-         loadButton.setFont(new Font("serif", Font.BOLD, 20));
-         loadButton.setBackground(Color.DARK_GRAY);
-         loadButton.setForeground(Color.WHITE);
-         loadButton.addActionListener(listener);
-                  
-         panel.add(colorPicker);
-         colorPicker.setFont(new Font("serif", Font.BOLD, 20));
-         colorPicker.setBackground(Color.DARK_GRAY);
-         colorPicker.setForeground(Color.WHITE);
-         colorPicker.addActionListener(listener);
-         
-         panel.add(clearButton);
-         clearButton.setFont(new Font("serif", Font.BOLD, 20));
-         clearButton.setBackground(Color.DARK_GRAY);
-         clearButton.setForeground(Color.WHITE);
-         clearButton.addActionListener(listener);
-         
-         panel.add(Verwijderen);
-         Verwijderen.setFont(new Font("serif", Font.BOLD, 20));
-         Verwijderen.setBackground(Color.DARK_GRAY);
-         Verwijderen.setForeground(Color.WHITE);
-         Verwijderen.addActionListener(listener);
-         
-         panel.add(Gebouwen);
-         Gebouwen.setFont(new Font("serif", Font.BOLD, 20));
-         Gebouwen.setBackground(Color.DARK_GRAY);
-         Gebouwen.setForeground(Color.WHITE);
-         Gebouwen.addActionListener(listener);
-         
-         
-         preset();
-         for (int i = 0; i < presets.size(); i++) {
+        panel.add(saveAsButton);
+        saveAsButton.setFont(new Font("serif", Font.BOLD, 20));
+        saveAsButton.setBackground(Color.DARK_GRAY);
+        saveAsButton.setForeground(Color.WHITE);
+        saveAsButton.addActionListener(listener);
+
+        panel.add(loadButton);
+        loadButton.setFont(new Font("serif", Font.BOLD, 20));
+        loadButton.setBackground(Color.DARK_GRAY);
+        loadButton.setForeground(Color.WHITE);
+        loadButton.addActionListener(listener);
+
+        panel.add(colorPicker);
+        colorPicker.setFont(new Font("serif", Font.BOLD, 20));
+        colorPicker.setBackground(Color.DARK_GRAY);
+        colorPicker.setForeground(Color.WHITE);
+        colorPicker.addActionListener(listener);
+
+        panel.add(clearButton);
+        clearButton.setFont(new Font("serif", Font.BOLD, 20));
+        clearButton.setBackground(Color.DARK_GRAY);
+        clearButton.setForeground(Color.WHITE);
+        clearButton.addActionListener(listener);
+
+        panel.add(Verwijderen);
+        Verwijderen.setFont(new Font("serif", Font.BOLD, 20));
+        Verwijderen.setBackground(Color.DARK_GRAY);
+        Verwijderen.setForeground(Color.WHITE);
+        Verwijderen.addActionListener(listener);
+
+        panel.add(Gebouwen);
+        Gebouwen.setFont(new Font("serif", Font.BOLD, 20));
+        Gebouwen.setBackground(Color.DARK_GRAY);
+        Gebouwen.setForeground(Color.WHITE);
+        Gebouwen.addActionListener(listener);
+
+        preset();
+        for (int i = 0; i < presets.size(); i++) {
             model3.addElement(presets.get(i));
-         }
-         panel.add(cmbPreset);
-         cmbPreset.setFont(new Font("serif", Font.BOLD, 20));
-         cmbPreset.addActionListener(listener);
-         
-         
-         
-         
-         
-         box.add(Box.createVerticalStrut(40));
-         
-         //Comboboc desk
-         putDesk();
-         for (int i = 0; i < desk.size(); i++) {
+        }
+        panel.add(cmbPreset);
+        cmbPreset.setFont(new Font("serif", Font.BOLD, 20));
+        cmbPreset.addActionListener(listener);
+
+        box.add(Box.createVerticalStrut(40));
+
+        //Combobox desk
+        putDesk();
+        for (int i = 0; i < desk.size(); i++) {
             model2.addElement(desk.get(i));
-          }
-         cmbDesk.setFont(new Font("serif", Font.BOLD, 20));
-         cmbDesk.addActionListener(listener);
-         box.add(cmbDesk);
-         
-         
-         rectangle.setPreferredSize(new Dimension(65, 55));
-         rectangle.addActionListener(listener);
-         box.add(rectangle);
-         box.add(Box.createVerticalStrut(40));
-                           
-         lblX.setForeground(Color.WHITE);
-         lblX.setFont(new Font("Serif", Font.PLAIN, 24));
-         box.add(lblX);
-         inputX.setFont(new Font("Serif", Font.CENTER_BASELINE, 24));
-         box.add(inputX);
-         
-         lblY.setForeground(Color.WHITE);
-         lblY.setFont(new Font("Serif", Font.PLAIN, 24));
-         box.add(lblY);
-         inputY.setFont(new Font("Serif", Font.CENTER_BASELINE, 24));
-         box.add(inputY);
-         
-         lblWidth.setForeground(Color.WHITE);
-         lblWidth.setFont(new Font("Serif", Font.PLAIN, 24));
-         box.add(lblWidth);
-         inputWidth.setFont(new Font("Serif", Font.CENTER_BASELINE, 24));
-         box.add(inputWidth);
-         
-         lblHeight.setForeground(Color.WHITE);
-         lblHeight.setFont(new Font("Serif", Font.PLAIN, 24));
-         box.add(lblHeight);
-         inputHeight.setFont(new Font("Serif", Font.CENTER_BASELINE, 24));
-         box.add(inputHeight);
-         
-         Aanmaken.setFont(new Font("serif", Font.BOLD, 20));
-         Aanmaken.setBackground(Color.DARK_GRAY);
-         Aanmaken.setForeground(Color.WHITE);
-         Aanmaken.addActionListener(listener);
-         this.JDraw.getRootPane().setDefaultButton(Aanmaken);
-         box.add(Aanmaken);
-         box.add(Box.createVerticalStrut(20));
-         
-         
-         
+        }
+        cmbDesk.setFont(new Font("serif", Font.BOLD, 20));
+        cmbDesk.addActionListener(listener);
+        box.add(cmbDesk);
+
+        rectangle.setPreferredSize(new Dimension(65, 55));
+        rectangle.addActionListener(listener);
+        box.add(rectangle);
+        box.add(Box.createVerticalStrut(40));
+
+        lblX.setForeground(Color.WHITE);
+        lblX.setFont(new Font("Serif", Font.PLAIN, 24));
+        box.add(lblX);
+        inputX.setFont(new Font("Serif", Font.CENTER_BASELINE, 24));
+        box.add(inputX);
+
+        lblY.setForeground(Color.WHITE);
+        lblY.setFont(new Font("Serif", Font.PLAIN, 24));
+        box.add(lblY);
+        inputY.setFont(new Font("Serif", Font.CENTER_BASELINE, 24));
+        box.add(inputY);
+
+        lblWidth.setForeground(Color.WHITE);
+        lblWidth.setFont(new Font("Serif", Font.PLAIN, 24));
+        box.add(lblWidth);
+        inputWidth.setFont(new Font("Serif", Font.CENTER_BASELINE, 24));
+        box.add(inputWidth);
+
+        lblHeight.setForeground(Color.WHITE);
+        lblHeight.setFont(new Font("Serif", Font.PLAIN, 24));
+        box.add(lblHeight);
+        inputHeight.setFont(new Font("Serif", Font.CENTER_BASELINE, 24));
+        box.add(inputHeight);
+
+        box.add(Box.createVerticalStrut(20));
+        Aanmaken.setFont(new Font("serif", Font.BOLD, 20));
+        Aanmaken.setBackground(Color.DARK_GRAY);
+        Aanmaken.setForeground(Color.WHITE);
+        Aanmaken.addActionListener(listener);
+        this.JDraw.getRootPane().setDefaultButton(Aanmaken);
+        box.add(Aanmaken);
+        box.add(Box.createVerticalStrut(20));
+
         container.add(panel, BorderLayout.NORTH);
         container.add(panel1, BorderLayout.SOUTH);
         container.add(box, BorderLayout.WEST);
         container.setFont(new Font("Dialog", Font.BOLD, 18));
-        
-         this.JDraw.setVisible(true);
-         this.JDraw.getContentPane().setBackground(Color.DARK_GRAY);
-         this.JDraw.setSize(width + 79, height + 11);
-         this.JDraw.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         this.JDraw.setLocationRelativeTo(null);
-         
+
+        this.JDraw.setVisible(true);
+        this.JDraw.getContentPane().setBackground(Color.DARK_GRAY);
+        this.JDraw.setSize(width + 79, height + 11);
+        this.JDraw.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.JDraw.setLocationRelativeTo(null);
+
     }
+
     /**
      * @param args the command line arguments
      */
@@ -945,7 +943,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(JFrameGebouwen.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -982,31 +980,28 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
             }
         });
     }
-    
+
     //Filtert de verdiepingen uit die overeenkomen met een gebouw
     public void getFloor() throws IOException {
-        
+
         List<Floor> floors = new ArrayList();
         List<Building> buildings = new ArrayList();
         List<String> vloeren = new ArrayList();
-        
-        
+
         buildings = json.getAllBuildings();
-        vloeren.clear();        
-        listModelVerdiep.removeAllElements();        
-       
+        vloeren.clear();
+        listModelVerdiep.removeAllElements();
+
         if (gebouw.getBuildingId() != null) {
             gebouwId = gebouw.getBuildingId();
         }
-
 
         for (int i = 0; i < buildings.size(); i++) {
             if (gebouw.getName().equals(buildings.get(i).getName())) {
                 gebouwId = buildings.get(i).getBuildingId();
             }
         }
-        
-        
+
         floors = json.getAllFloors();
 
         for (int i = 0; i < floors.size(); i++) {
@@ -1015,14 +1010,14 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
 
                 vloeren.add(floors.get(i).getFloorId().toString());
                 vloeren.add(floors.get(i).getName());
-                 
+
             }
         }
         for (int t = 0; t < vloeren.size(); t++) {
-                listModelVerdiep.addElement(vloeren.get(t));
-                
-                }
-             lstVerdiepingen.setModel(listModelVerdiep);
+            listModelVerdiep.addElement(vloeren.get(t));
+
+        }
+        lstVerdiepingen.setModel(listModelVerdiep);
 //        for (int i = 0; i < vloeren.size(); i++) {
 //            System.out.println(vloeren.get(i));
 //        }
@@ -1060,7 +1055,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
 //            canvas.setThickness(thicknessSlider.getValue());
 //        }
 //    };
-    
+
     ActionListener listener = new ActionListener() {
 
         @Override
@@ -1104,31 +1099,38 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
                 }
                 canvas.picker(color);
             } else if (event.getSource() == rectangle) {
-                if (value == null) {
+                if (value == null || value == "Selecteer een desk ...") {
                     javax.swing.JOptionPane.showMessageDialog(null, "Opgelet: U hebt geen desk geselecteerd!",
                             "                                                        Foutbericht",
                             javax.swing.JOptionPane.ERROR_MESSAGE);
 
                 } else {
-                canvas.rect();
+                    canvas.rect();
                 }
 
             } else if (event.getSource() == Aanmaken) {
-                int x = Integer.parseInt(inputX.getText());
-                int y = Integer.parseInt(inputY.getText());
-                int width1 = Integer.parseInt(inputWidth.getText());
-                int height1 = Integer.parseInt(inputHeight.getText());
-                //value = lstDesk.getSelectedValue().toString();  
-                if (value == null) {
+                
+                
+
+                if (value == null || value == "Selecteer een desk ...") {
                     javax.swing.JOptionPane.showMessageDialog(null, "Opgelet: U hebt geen desk geselecteerd!",
                             "                                                        Foutbericht",
                             javax.swing.JOptionPane.ERROR_MESSAGE);
 
-                } else {
+                } else if(!inputX.getText().isEmpty() && !inputY.getText().isEmpty() && !inputWidth.getText().isEmpty() && !inputHeight.getText().isEmpty() ) {
+                    
                     value = cmbDesk.getSelectedItem().toString();
-
+                    int x = Integer.parseInt(inputX.getText());
+                    int y = Integer.parseInt(inputY.getText());
+                    int width1 = Integer.parseInt(inputWidth.getText());
+                    int height1 = Integer.parseInt(inputHeight.getText());                
                     canvas.setRechthoek(x, y, width1, height1, value);
                     clearInput();
+                
+                }else{
+                    javax.swing.JOptionPane.showMessageDialog(null, "Opgelet: U hebt geen coördinaten ingegeven!",
+                            "                                                        Foutbericht",
+                            javax.swing.JOptionPane.ERROR_MESSAGE);
                 }
 
             } else if (event.getSource() == cmbDesk) {
@@ -1182,10 +1184,10 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         inputWidth.setText("");
         inputHeight.setText("");
     }
-    
-     //maakt desks aan voor lstDesk
+
+    //maakt desks aan voor lstDesk
     public List<String> putDesk() {
-        
+
         desk = new ArrayList();
         desk.add("Selecteer een desk ...");
         desk.add("desk1");
@@ -1209,6 +1211,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         return desk;
 
     }
+
     public List<String> preset() {
         presets = new ArrayList();
         presets.add("Selecteer een opstelling ...");
@@ -1289,8 +1292,4 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
     private javax.swing.JTextField widthField;
     // End of variables declaration//GEN-END:variables
 
-   
-
-        
-    
 }
