@@ -431,7 +431,7 @@ public final class Canvas extends JComponent {
         }
     }
 
-    // haalt alle gegevens uit tabel conrdinaat op
+    // haalt alle gegevens uit tabel coordinaat op
     public void getData() {
         if (!em.isOpen()) {
             em = emf.createEntityManager();
@@ -442,7 +442,7 @@ public final class Canvas extends JComponent {
         svg = "<svg>";
         for (Coordinaat cd : coordinaten) {
 
-            svg += "<rect id=" + cd.getDeskId() + "," + " width=" + cd.getWidth1() + "," + " height=" + cd.getHeight1() + ", " + " x=" + cd.getX1() + ", " + "y=" + cd.getY1() + "/>";
+            svg += "<rect id="+'"' + cd.getDeskId() + '"' + " width="+'"' + cd.getWidth1() + '"' + " height="+'"' + cd.getHeight1() + '"' + " x="+ '"' + cd.getX1() + '"' + " y="+'"' + cd.getY1() + '"'+ "/>";
 
         }
 
@@ -487,7 +487,8 @@ public final class Canvas extends JComponent {
 
     // constructor om rechthoek aan te maken hier zitten de desks ook   
     public void setRechthoek(int x, int y, int width, int height, String deskId) {
-        Graphics2D g2d = (Graphics2D) img.getGraphics();
+        
+        g2d = (Graphics2D) img.getGraphics();
 
         g2d.setColor(Color.orange);
 
@@ -496,9 +497,13 @@ public final class Canvas extends JComponent {
         this.y = y;
         this.width = width;
         this.height = height;
-        cd.deskId = deskId;
+        cd.deskId = deskId; 
+        
         repaint();
         opslaan2();
+       
+       
+        
     }
     
 //     public Color kleur(Color color){
@@ -512,7 +517,7 @@ public final class Canvas extends JComponent {
 
     public void setRechthoeken(int x, int y, int width, int height) {
 
-        Graphics2D g2d = (Graphics2D) img.getGraphics();
+        g2d = (Graphics2D) img.getGraphics();
 
         g2d.setColor(Color.orange);
 
