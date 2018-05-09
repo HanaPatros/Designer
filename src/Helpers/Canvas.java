@@ -1,6 +1,6 @@
 package Helpers;
 
-import UI.Draw;
+import DAO.DaCoordinaat;
 import Model.Coordinaat;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -124,7 +124,8 @@ public final class Canvas extends JComponent {
         getData();
         floor = new Floor();
         floor.setSVG(lst.toString());
-        
+
+        //getRechthoekenOnStartUp();
     }
 
     public void defaultListener() {
@@ -164,6 +165,7 @@ public final class Canvas extends JComponent {
 
         //g2d.fillRect(X1, Y1,getSize().width, getSize().height);
         repaint();
+
     }
 
     public void red() {
@@ -216,7 +218,6 @@ public final class Canvas extends JComponent {
             g.setPaint(color);
         }
     }
-    
 
     public void clear() {
         int yZ = 1;
@@ -342,8 +343,6 @@ public final class Canvas extends JComponent {
             shape = new Rectangle();
 
         }
-        
-       
 
         @Override
         public void mouseDragged(MouseEvent e) {
@@ -356,18 +355,14 @@ public final class Canvas extends JComponent {
 
             height = Math.abs(startPoint.y - e.getY());
 
-            
             repaint();
             Graphics2D g2d = (Graphics2D) img.getGraphics();
-           
-            
+
             g2d.setColor(Color.orange);
             //g2d.setColor(kleur(color));
             g2d.fill3DRect(x, y, width, height, true);
-          
 
         }
-        
 
         @Override
         public void mouseReleased(MouseEvent e) {
@@ -375,15 +370,49 @@ public final class Canvas extends JComponent {
                 addRectangle(shape, e.getComponent().getForeground());
 
             }
-
+            DaCoordinaat da = new DaCoordinaat();
+            coordinaten = da.getAllCoordinates();
+            if (coordinaten.isEmpty()) {
             shape = null;
             repaint();
-            opslaan();
+            saveOnMouseRelease();
+            }
+            
+            for(Coordinaat coordinaat : coordinaten){
+                if(!coordinaat.getDeskId().equals(getGegeven())){
+                    shape = null;
+                    repaint();
+                    saveOnMouseRelease();
+                }else{
+                    javax.swing.JOptionPane.showMessageDialog(null, "Opgelet: De desk die u hebt geselecteerd is reeds gekend!",
+                            "                                                        Foutbericht",
+                            javax.swing.JOptionPane.ERROR_MESSAGE);
+                   g.setPaint(Color.white);
+            g.fillRect(0, 0, getSize().width, getSize().height);
+            g.setPaint(Color.ORANGE);
+            int xZ = 1;
+            int yZ = 1;
+            int size = 10;
+            int teller = 0;
+
+            for (int i = 0; i < 1500; i++) {
+                for (int j = 0; j < 1500; j++) {
+                    teller = teller + 1;
+                    g.drawRect(xZ, yZ, size, size);
+                    yZ += size;
+                }
+                xZ += size;
+                yZ = 1;
+            }
+                    repaint();
+                }
+                
+            }
         }
     }
 
     // voedt databank en haalt de gegevens van mousdragactionlistener
-    public void opslaan() {
+    public void saveOnMouseRelease() {
         if (!em.isOpen()) {
             em = emf.createEntityManager();
         }
@@ -408,7 +437,7 @@ public final class Canvas extends JComponent {
     }
 
     // haalt gegevens op uit de rechthoek die met knop aangemaakt wordt
-    public void opslaan2() {
+    public void opslaanMetKnop() {
         if (!em.isOpen()) {
             em = emf.createEntityManager();
         }
@@ -442,7 +471,7 @@ public final class Canvas extends JComponent {
         svg = "<svg>";
         for (Coordinaat cd : coordinaten) {
 
-            svg += "<rect id="+'"' + cd.getDeskId() + '"' + " width="+'"' + cd.getWidth1() + '"' + " height="+'"' + cd.getHeight1() + '"' + " x="+ '"' + cd.getX1() + '"' + " y="+'"' + cd.getY1() + '"'+ "/>";
+            svg += "<rect id=" + '"' + cd.getDeskId() + '"' + " width=" + '"' + cd.getWidth1() + '"' + " height=" + '"' + cd.getHeight1() + '"' + " x=" + '"' + cd.getX1() + '"' + " y=" + '"' + cd.getY1() + '"' + "/>";
 
         }
 
@@ -451,6 +480,27 @@ public final class Canvas extends JComponent {
         lst.add(svg);
 
         em.close();
+    }
+
+    public void getRechthoekenOnStartUp() {
+
+        if (!em.isOpen()) {
+            em = emf.createEntityManager();
+        }
+
+        coordinaten = new ArrayList<>();
+
+        coordinaten = (List<Coordinaat>) em.createQuery("SELECT t FROM Coordinaat t ").getResultList();
+
+        for (Coordinaat cd : coordinaten) {
+            g2d = (Graphics2D) img.getGraphics();
+            g2d.setColor(Color.orange);
+
+            g2d.fillRect(cd.getX1(), cd.getY1(), cd.getWidth1(), cd.getHeight1());
+
+        }
+
+        repaint();
     }
 
     public void verwijderen(String deskId) {
@@ -487,25 +537,58 @@ public final class Canvas extends JComponent {
 
     // constructor om rechthoek aan te maken hier zitten de desks ook   
     public void setRechthoek(int x, int y, int width, int height, String deskId) {
-        
-        g2d = (Graphics2D) img.getGraphics();
 
-        g2d.setColor(Color.orange);
+        try {
 
-        g2d.fillRect(x, y, width, height);
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        cd.deskId = deskId; 
-        
-        repaint();
-        opslaan2();
-       
-       
-        
+            DaCoordinaat da = new DaCoordinaat();
+            coordinaten = da.getAllCoordinates();
+            if (coordinaten.isEmpty()) {
+                g2d = (Graphics2D) img.getGraphics();
+
+                g2d.setColor(Color.orange);
+
+                g2d.fillRect(x, y, width, height);
+                this.x = x;
+                this.y = y;
+                this.width = width;
+                this.height = height;
+                cd.deskId = deskId;
+
+                opslaanMetKnop();
+                repaint();
+            }
+            for (Coordinaat coordinaat : coordinaten) {
+
+                if (!coordinaat.getDeskId().equals(deskId)) {
+
+                    g2d = (Graphics2D) img.getGraphics();
+
+                    g2d.setColor(Color.orange);
+
+                    g2d.fillRect(x, y, width, height);
+                    this.x = x;
+                    this.y = y;
+                    this.width = width;
+                    this.height = height;
+                    cd.deskId = deskId;
+
+                    opslaanMetKnop();
+                    repaint();
+
+                } else {
+
+                    javax.swing.JOptionPane.showMessageDialog(null, "Opgelet: De desk die u hebt geselecteerd is reeds gekend!",
+                            "                                                        Foutbericht",
+                            javax.swing.JOptionPane.ERROR_MESSAGE);
+
+                }
+            }
+        } catch (Exception ex) {
+            ex.getStackTrace();
+        }
+
     }
-    
+
 //     public Color kleur(Color color){
 //            g2d = (Graphics2D) img.getGraphics();
 //            
@@ -514,7 +597,6 @@ public final class Canvas extends JComponent {
 //        }
 //            return color;
 //        }
-
     public void setRechthoeken(int x, int y, int width, int height) {
 
         g2d = (Graphics2D) img.getGraphics();
@@ -535,19 +617,21 @@ public final class Canvas extends JComponent {
 
         coordinaten = new ArrayList<>();
         try {
-        List<Coordinaat> coordinaten = (List<Coordinaat>) em.createQuery("SELECT t FROM Coordinaat t ").getResultList();
+            List<Coordinaat> coordinaten = (List<Coordinaat>) em.createQuery("SELECT t FROM Coordinaat t ").getResultList();
 
-        for (Coordinaat cd : coordinaten) {
-            g2d.setColor(Color.orange);
+            for (Coordinaat cd : coordinaten) {
+                g2d.setColor(Color.orange);
 
-            g2d.fillRect(cd.getX1(), cd.getY1(), cd.getWidth1(), cd.getHeight1());
-        }
+                g2d.fillRect(cd.getX1(), cd.getY1(), cd.getWidth1(), cd.getHeight1());
+            }
         } catch (Exception ex) {
             em.getTransaction().rollback();
         } finally {
             em.close();
         }
+        repaint();
     }
+
 
     // geeft geselcteerde desk weer
     public String getGegeven() {
@@ -565,7 +649,5 @@ public final class Canvas extends JComponent {
     public void setColor(Color color) {
         this.color = color;
     }
-    
-    
 
 }

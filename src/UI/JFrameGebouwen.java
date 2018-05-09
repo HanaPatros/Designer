@@ -43,6 +43,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import static org.testng.internal.Utils.stackTrace;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -75,7 +76,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
     long gebouwId = 0;
     Long selectedFloorId;
     String svg;
-    InputWH ip;
+    
     public int width;
     public int height;
     List<String> desk;
@@ -230,6 +231,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         lblHeight = new javax.swing.JLabel();
         inputHeight = new javax.swing.JTextField();
         filenameBar = new javax.swing.JLabel();
+        btnDraw = new javax.swing.JButton();
         jLayeredPane2 = new javax.swing.JLayeredPane();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -260,8 +262,10 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         jLabel4.setText("Height");
 
         widthField.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        widthField.setText("1500");
 
         heightField.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        heightField.setText("1000");
 
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Minimum width: 900 and height: 800");
@@ -366,6 +370,13 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         filenameBar.setBackground(new java.awt.Color(153, 153, 153));
         filenameBar.setText("no file");
 
+        btnDraw.setText("Get drawing");
+        btnDraw.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDrawActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JDrawLayout = new javax.swing.GroupLayout(JDraw.getContentPane());
         JDraw.getContentPane().setLayout(JDrawLayout);
         JDrawLayout.setHorizontalGroup(
@@ -382,9 +393,12 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
                                 .addComponent(Aanmaken))))
                     .addGroup(JDrawLayout.createSequentialGroup()
                         .addGap(154, 154, 154)
-                        .addComponent(rectangle)
-                        .addGap(31, 31, 31)
-                        .addComponent(saveButton)))
+                        .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnDraw)
+                            .addGroup(JDrawLayout.createSequentialGroup()
+                                .addComponent(rectangle)
+                                .addGap(31, 31, 31)
+                                .addComponent(saveButton)))))
                 .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JDrawLayout.createSequentialGroup()
                         .addGap(36, 36, 36)
@@ -453,7 +467,9 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
                     .addGroup(JDrawLayout.createSequentialGroup()
                         .addGap(69, 69, 69)
                         .addComponent(rectangle)))
-                .addGap(56, 56, 56)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnDraw)
+                .addGap(16, 16, 16)
                 .addComponent(inputX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JDrawLayout.createSequentialGroup()
@@ -675,7 +691,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         this.dispose();
         this.JInputWH.setVisible(true);
         this.JInputWH.setLocationRelativeTo(null);
-        this.JInputWH.setSize(600, 200);
+        this.JInputWH.setSize(600, 300);
         this.JInputWH.setDefaultCloseOperation(JInputWH.EXIT_ON_CLOSE);
 // InputWH ip = new InputWH(); 
 //            SwingUtilities.invokeLater(new Runnable() {            
@@ -768,6 +784,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
 //        } catch (IllegalArgumentException e) {
 //        }
         this.JInputWH.dispose();
+        //canvas.getRechthoekenOnStartUp();
     }//GEN-LAST:event_btnOKActionPerformed
 
     public void JInputWH() {
@@ -775,6 +792,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
 //        JInputWH.setForeground(Color.DARK_GRAY);
 //        jLayeredPane1.setBackground(Color.DARK_GRAY);
         this.JInputWH.getRootPane().setDefaultButton(btnOK);
+        this.JInputWH.setSize(400,300);
         this.JInputWH.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.JInputWH.setLocationRelativeTo(null);
         Container container = this.JInputWH.getContentPane();
@@ -784,6 +802,10 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void btnDrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDrawActionPerformed
+        canvas.getRechthoekenOnStartUp();
+    }//GEN-LAST:event_btnDrawActionPerformed
 
     public void JDraw() {
 
@@ -806,7 +828,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         panel.setBackground(Color.DARK_GRAY);
         panel.add(saveButton);
         saveButton.setFont(new Font("serif", Font.BOLD, 20));
-        saveButton.setBackground(Color.DARK_GRAY);
+        //saveButton.setBackground(Color.DARK_GRAY);
         saveButton.setForeground(Color.WHITE);
         saveButton.addActionListener(listener);
 
@@ -845,6 +867,12 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         Gebouwen.setBackground(Color.DARK_GRAY);
         Gebouwen.setForeground(Color.WHITE);
         Gebouwen.addActionListener(listener);
+        
+        panel.add(btnDraw);
+        btnDraw.setFont(new Font("serif", Font.BOLD, 20));
+        btnDraw.setBackground(Color.DARK_GRAY);
+        btnDraw.setForeground(Color.WHITE);
+        
 
         preset();
         for (int i = 0; i < presets.size(); i++) {
@@ -973,7 +1001,8 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
             @Override
             public void run() {
                 try {
-                    new JFrameGebouwen().setVisible(true);
+                    new JFrameGebouwen().JInputWH.setVisible(true);
+                    
                 } catch (IOException ex) {
                     Logger.getLogger(JFrameGebouwen.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -1144,7 +1173,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
                     jf.setVisible(true);
                     // jf.enable(true);
                 } catch (IOException ex) {
-                    Logger.getLogger(Draw.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.getStackTrace();
                 }
 
             } else if (event.getSource() == cmbPreset) {
@@ -1250,10 +1279,11 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
     private javax.swing.JButton Aanmaken;
     private javax.swing.JButton Gebouwen;
     private javax.swing.JFrame JDraw;
-    private javax.swing.JFrame JInputWH;
+    public javax.swing.JFrame JInputWH;
     private javax.swing.JButton Verwijderen;
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnDesigner;
+    private javax.swing.JButton btnDraw;
     private javax.swing.JButton btnJson;
     private javax.swing.JButton btnOK;
     private javax.swing.JButton clearButton;

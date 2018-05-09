@@ -53,7 +53,8 @@ public class Server {
             stmt = conn.createStatement();
           
              JFrameGebouwen gebouwen = new JFrameGebouwen();
-             gebouwen.setVisible(true);
+             gebouwen.JInputWH.setVisible(true);
+             //gebouwen.setVisible(true);
             prestat = conn.prepareStatement("SELECT * FROM Coordinaat");
             result = prestat.executeQuery();
              
