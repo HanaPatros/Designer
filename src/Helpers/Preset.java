@@ -5,7 +5,7 @@
  */
 package Helpers;
 
-import Model.Coordinaat;
+import Model.Coördinaat;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -20,7 +20,7 @@ public class Preset {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("DesigntoolPU");
     EntityManager em = emf.createEntityManager();
     EntityTransaction tx = em.getTransaction();
-    Coordinaat cd = new Coordinaat();
+    Coördinaat cd = new Coördinaat();
     private int x;
     private int y;
     private int width;

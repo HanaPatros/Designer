@@ -59,15 +59,15 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
     DefaultListModel listModel;
     DefaultListModel listModel2;
     DefaultListModel listModelVerdiep;
-    Building gebouw;
-    Floor verdieping;
+    Building building;
+    Floor floor;
 
-    List<Building> gebouwen;
-    List<Floor> verdiepingen;
+    List<Building> buildings;
+    List<Floor> floors;
 
     JsonService json;
     Canvas canvas;
-    Preset pr;
+    Preset preset;
     private DefaultTableModel model;
     private int row = 0;
     int getConvGebouwRow;
@@ -90,7 +90,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
 //            Gebouwen, Verwijderen;
 //    JLabel coordinaten, lblX, lblY, lblHeight, lblWidth;
 //    JTextField inputX, inputY, inputHeight, inputWidth;
-    String value;
+    String cmbDeskSelectedItem;
     Color color = Color.WHITE;
     private JFileChooser fileChooser;
     private File file;
@@ -117,19 +117,19 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.getContentPane().setBackground(Color.DARK_GRAY);
-        gebouwen = new ArrayList();
+        buildings = new ArrayList();
         json = new JsonService();
         fillJlist();
-        gebouwen = json.getAllBuildings();
+        buildings = json.getAllBuildings();
         canvas = new Canvas();
-        gebouw = new Building();
+        building = new Building();
 
         model = new DefaultTableModel();
-        verdieping = new Floor();
+        floor = new Floor();
         JTableHeader header = tblGebouw.getTableHeader();
         header.setFont(new Font("Dialog", Font.BOLD, 18));
 
-        verdiepingen = new ArrayList();
+        floors = new ArrayList();
 
         vloeren = new ArrayList();
 
@@ -156,17 +156,17 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
     }
 
     public void populateGebouwTabel() throws IOException {
-        gebouwen = json.getAllBuildings();
+        buildings = json.getAllBuildings();
         model = (DefaultTableModel) tblGebouw.getModel();
         model.setRowCount(0);
         rowData = new Object[6];
-        for (int i = 0; i < gebouwen.size(); i++) {
-            rowData[0] = gebouwen.get(i).getBuildingId();
-            rowData[1] = gebouwen.get(i).getName();
-            rowData[2] = gebouwen.get(i).getStreet();
-            rowData[3] = gebouwen.get(i).getNumber();
-            rowData[4] = gebouwen.get(i).getCity();
-            rowData[5] = gebouwen.get(i).getZipCode();
+        for (int i = 0; i < buildings.size(); i++) {
+            rowData[0] = buildings.get(i).getBuildingId();
+            rowData[1] = buildings.get(i).getName();
+            rowData[2] = buildings.get(i).getStreet();
+            rowData[3] = buildings.get(i).getNumber();
+            rowData[4] = buildings.get(i).getCity();
+            rowData[5] = buildings.get(i).getZipCode();
             model.addRow(rowData);
         }
 
@@ -337,21 +337,26 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
                 .addContainerGap(44, Short.MAX_VALUE))
         );
 
-        Verwijderen.setText("Verwijderen");
+        Verwijderen.setText("Remove desk");
 
-        Aanmaken.setText("Tekenen");
+        Aanmaken.setText("Draw");
 
-        Gebouwen.setText("Open gebouwen");
+        Gebouwen.setText("Open buildings");
+        Gebouwen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GebouwenActionPerformed(evt);
+            }
+        });
 
-        cmbDesk.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecteer een desk ...", "desk1", "desk2", "desk3", "desk4", "desk5", "desk6", "desk7", "desk8", "desk9", "desk10", "desk11", "desk12", "desk13", "desk14", "desk15", "desk16", "desk17", "desk18" }));
+        cmbDesk.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select a desk ...", "desk1", "desk2", "desk3", "desk4", "desk5", "desk6", "desk7", "desk8", "desk9", "desk10", "desk11", "desk12", "desk13", "desk14", "desk15", "desk16", "desk17", "desk18" }));
 
-        cmbPreset.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecteer een opstelling...", "2x2", "4x4", "8x8" }));
+        cmbPreset.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select a preset...", "2x2", "4x4", "8x8" }));
 
         colorPicker.setText("Color picker");
 
         saveAsButton.setText("Save as");
 
-        clearButton.setText("Clear");
+        clearButton.setText("Remove all");
 
         loadButton.setText("Load");
 
@@ -415,7 +420,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
                         .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(saveAsButton, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(clearButton, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addContainerGap(56, Short.MAX_VALUE))
+                        .addContainerGap(101, Short.MAX_VALUE))
                     .addGroup(JDrawLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(inputHeight)
@@ -502,7 +507,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         jLabel1.setBackground(new java.awt.Color(133, 181, 205));
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(133, 181, 205));
-        jLabel1.setText("Gebouwen");
+        jLabel1.setText("1 Building \"select a builidng to get the coppled floors\"");
 
         tblGebouw.setBackground(new java.awt.Color(133, 181, 205));
         tblGebouw.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -515,7 +520,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "BuildingId", "Gebouwnaam", "Straat", "Huisnr", "Stad", "Postcode"
+                "BuildingId", "Building name", "Street", "House nr", "City", "Post code"
             }
         ) {
             Class[] types = new Class [] {
@@ -539,7 +544,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         jLabel2.setBackground(new java.awt.Color(133, 181, 205));
         jLabel2.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(133, 181, 205));
-        jLabel2.setText("Verdiepingen");
+        jLabel2.setText("2 Floors");
 
         lstVerdiepingen.setBackground(new java.awt.Color(133, 181, 205));
         lstVerdiepingen.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("sansserif", 1, 18))); // NOI18N
@@ -672,12 +677,12 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         row = tblGebouw.getSelectedRow();
         getConvGebouwRow = tblGebouw.convertRowIndexToModel(row);
 
-        gebouw.setBuildingId((long) model.getValueAt(row, 0));
-        gebouw.setName(model.getValueAt(row, 1).toString());
-        gebouw.setStreet(model.getValueAt(row, 2).toString());
-        gebouw.setNumber((int) model.getValueAt(row, 3));
-        gebouw.setCity(model.getValueAt(row, 4).toString());
-        gebouw.setZipCode((int) model.getValueAt(row, 5));
+        building.setBuildingId((long) model.getValueAt(row, 0));
+        building.setName(model.getValueAt(row, 1).toString());
+        building.setStreet(model.getValueAt(row, 2).toString());
+        building.setNumber((int) model.getValueAt(row, 3));
+        building.setCity(model.getValueAt(row, 4).toString());
+        building.setZipCode((int) model.getValueAt(row, 5));
         try {
             getFloor();
 
@@ -693,6 +698,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         this.JInputWH.setLocationRelativeTo(null);
         this.JInputWH.setSize(600, 300);
         this.JInputWH.setDefaultCloseOperation(JInputWH.EXIT_ON_CLOSE);
+        
 // InputWH ip = new InputWH(); 
 //            SwingUtilities.invokeLater(new Runnable() {            
 //            @Override
@@ -785,6 +791,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
 //        }
         this.JInputWH.dispose();
         //canvas.getRechthoekenOnStartUp();
+       
     }//GEN-LAST:event_btnOKActionPerformed
 
     public void JInputWH() {
@@ -806,6 +813,10 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
     private void btnDrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDrawActionPerformed
         canvas.getRechthoekenOnStartUp();
     }//GEN-LAST:event_btnDrawActionPerformed
+
+    private void GebouwenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GebouwenActionPerformed
+       
+    }//GEN-LAST:event_GebouwenActionPerformed
 
     public void JDraw() {
 
@@ -885,7 +896,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         box.add(Box.createVerticalStrut(40));
 
         //Combobox desk
-        putDesk();
+        listOfDesks();
         for (int i = 0; i < desk.size(); i++) {
             model2.addElement(desk.get(i));
         }
@@ -1021,12 +1032,12 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         vloeren.clear();
         listModelVerdiep.removeAllElements();
 
-        if (gebouw.getBuildingId() != null) {
-            gebouwId = gebouw.getBuildingId();
+        if (building.getBuildingId() != null) {
+            gebouwId = building.getBuildingId();
         }
 
         for (int i = 0; i < buildings.size(); i++) {
-            if (gebouw.getName().equals(buildings.get(i).getName())) {
+            if (building.getName().equals(buildings.get(i).getName())) {
                 gebouwId = buildings.get(i).getBuildingId();
             }
         }
@@ -1128,7 +1139,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
                 }
                 canvas.picker(color);
             } else if (event.getSource() == rectangle) {
-                if (value == null || value == "Selecteer een desk ...") {
+                if (cmbDeskSelectedItem == null || cmbDeskSelectedItem == "Select a desk ...") {
                     javax.swing.JOptionPane.showMessageDialog(null, "Opgelet: U hebt geen desk geselecteerd!",
                             "                                                        Foutbericht",
                             javax.swing.JOptionPane.ERROR_MESSAGE);
@@ -1141,19 +1152,19 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
                 
                 
 
-                if (value == null || value == "Selecteer een desk ...") {
+                if (cmbDeskSelectedItem == null || cmbDeskSelectedItem == "Select a desk ...") {
                     javax.swing.JOptionPane.showMessageDialog(null, "Opgelet: U hebt geen desk geselecteerd!",
                             "                                                        Foutbericht",
                             javax.swing.JOptionPane.ERROR_MESSAGE);
 
                 } else if(!inputX.getText().isEmpty() && !inputY.getText().isEmpty() && !inputWidth.getText().isEmpty() && !inputHeight.getText().isEmpty() ) {
                     
-                    value = cmbDesk.getSelectedItem().toString();
+                    cmbDeskSelectedItem = cmbDesk.getSelectedItem().toString();
                     int x = Integer.parseInt(inputX.getText());
                     int y = Integer.parseInt(inputY.getText());
                     int width1 = Integer.parseInt(inputWidth.getText());
                     int height1 = Integer.parseInt(inputHeight.getText());                
-                    canvas.setRechthoek(x, y, width1, height1, value);
+                    canvas.setRechthoek(x, y, width1, height1, cmbDeskSelectedItem);
                     clearInput();
                 
                 }else{
@@ -1164,13 +1175,14 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
 
             } else if (event.getSource() == cmbDesk) {
                 //value = lstDesk.getSelectedValue().toString(); 
-                value = cmbDesk.getSelectedItem().toString();
-                canvas.setGegeven(value);
+                cmbDeskSelectedItem = cmbDesk.getSelectedItem().toString();
+                canvas.setCmbDeskId(cmbDeskSelectedItem);
 
             } else if (event.getSource() == Gebouwen) {
                 try {
                     JFrameGebouwen jf = new JFrameGebouwen();
                     jf.setVisible(true);
+                    //jf.btnDesigner.setEnabled(false);
                     // jf.enable(true);
                 } catch (IOException ex) {
                     ex.getStackTrace();
@@ -1181,26 +1193,26 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
                 String vier = "4x4";
                 String acht = "8x8";
                 String combinatie = cmbPreset.getSelectedItem().toString();
-                pr = new Preset();
+                preset = new Preset();
                 if (vier.equals(combinatie)) {
 
-                    pr.vierOpVier();
+                    preset.vierOpVier();
                     canvas.getDataPreset();
                 } else if (twee.equals(combinatie)) {
-                    pr.tweeOpTwee();
+                    preset.tweeOpTwee();
                     canvas.getDataPreset();
                 } else if (acht.equals(combinatie)) {
-                    pr.achtOpAcht();
+                    preset.achtOpAcht();
                     canvas.getDataPreset();
                 }
             } else if (event.getSource() == Verwijderen) {
-                if (value == null) {
+                if (cmbDeskSelectedItem == null) {
                     javax.swing.JOptionPane.showMessageDialog(null, "Opgelet: U hebt geen desk geselecteerd!",
                             "                                                        Foutbericht",
                             javax.swing.JOptionPane.ERROR_MESSAGE);
 
                 } else {
-                    canvas.verwijderen(value);
+                    canvas.verwijderen(cmbDeskSelectedItem);
                 }
             }
 
@@ -1215,10 +1227,10 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
     }
 
     //maakt desks aan voor lstDesk
-    public List<String> putDesk() {
+    public List<String> listOfDesks() {
 
         desk = new ArrayList();
-        desk.add("Selecteer een desk ...");
+        desk.add("Select a desk ...");
         desk.add("desk1");
         desk.add("desk2");
         desk.add("desk3");
@@ -1243,27 +1255,27 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
 
     public List<String> preset() {
         presets = new ArrayList();
-        presets.add("Selecteer een opstelling ...");
+        presets.add("Select a preset ...");
         presets.add("2x2");
         presets.add("4x4");
         presets.add("8x8");
         return presets;
     }
 
-    public List<String> getDesk1() {
+    public List<String> getDeskList() {
         return desk;
     }
 
-    public void setDesk1(List<String> desk) {
+    public void setDeskList(List<String> desk) {
         this.desk = desk;
     }
 
-    public String getValue() {
-        return value;
+    public String getCmbDeskSelectedItem() {
+        return cmbDeskSelectedItem;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setCmbDeskSelectedItem(String cmbDeskSelectedItem) {
+        this.cmbDeskSelectedItem = cmbDeskSelectedItem;
     }
 
     public List<String> getPresets() {

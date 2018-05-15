@@ -5,7 +5,7 @@
  */
 package DAO;
 
-import Model.Coordinaat;
+import Model.Coördinaat;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,8 +20,8 @@ import java.util.logging.Logger;
  * @author sa59053
  */
 public class DaCoordinaat {
-    Coordinaat coordinaat;
-    List<Coordinaat> coordinaten;
+    Coördinaat coordinaat;
+    List<Coördinaat> coordinaten;
     DaBase db = new DaBase();
         Connection conn = db.getConnection();
         Statement stmt;
@@ -29,13 +29,13 @@ public class DaCoordinaat {
         
         
     }    
-    public ArrayList<Coordinaat> getAllCoordinates() {
+    public ArrayList<Coördinaat> getAllCoordinates() {
         try {
             stmt = conn.createStatement();
             conn.setAutoCommit(false);
-coordinaten = new ArrayList();
-coordinaat = new Coordinaat();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM COORDINAAT ");
+            coordinaten = new ArrayList();
+            coordinaat = new Coördinaat();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM COÖRDINAAT ");
             while (rs.next()) {
                 coordinaat.setId(rs.getLong("Id"));
                 coordinaat.setDeskId(rs.getString("DeskId"));
@@ -49,11 +49,13 @@ coordinaat = new Coordinaat();
         
 
             conn.commit();
-            conn.close();
+            
 
         } catch (SQLException ex) {
             Logger.getLogger(DaCoordinaat.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return (ArrayList<Coordinaat>) coordinaten;    
+        return (ArrayList<Coördinaat>) coordinaten;    
     }    
+    
+    
 }

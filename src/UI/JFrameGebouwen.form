@@ -196,7 +196,7 @@
                               <Component id="saveAsButton" alignment="1" min="-2" max="-2" attributes="0"/>
                               <Component id="clearButton" alignment="1" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="56" max="32767" attributes="0"/>
+                          <EmptySpace pref="101" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -308,24 +308,27 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="Verwijderen">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Verwijderen"/>
+            <Property name="text" type="java.lang.String" value="Remove desk"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Aanmaken">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Tekenen"/>
+            <Property name="text" type="java.lang.String" value="Draw"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Gebouwen">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Open gebouwen"/>
+            <Property name="text" type="java.lang.String" value="Open buildings"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="GebouwenActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JComboBox" name="cmbDesk">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="19">
-                <StringItem index="0" value="Selecteer een desk ..."/>
+                <StringItem index="0" value="Select a desk ..."/>
                 <StringItem index="1" value="desk1"/>
                 <StringItem index="2" value="desk2"/>
                 <StringItem index="3" value="desk3"/>
@@ -355,7 +358,7 @@
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="4">
-                <StringItem index="0" value="Selecteer een opstelling..."/>
+                <StringItem index="0" value="Select a preset..."/>
                 <StringItem index="1" value="2x2"/>
                 <StringItem index="2" value="4x4"/>
                 <StringItem index="3" value="8x8"/>
@@ -378,7 +381,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="clearButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Clear"/>
+            <Property name="text" type="java.lang.String" value="Remove all"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="loadButton">
@@ -567,7 +570,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cd" green="b5" red="85" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Gebouwen"/>
+            <Property name="text" type="java.lang.String" value="1 Building &quot;select a builidng to get the coppled floors&quot;"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane4">
@@ -593,11 +596,11 @@
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="6" rowCount="4">
                     <Column editable="true" title="BuildingId" type="java.lang.Long"/>
-                    <Column editable="true" title="Gebouwnaam" type="java.lang.Object"/>
-                    <Column editable="true" title="Straat" type="java.lang.Object"/>
-                    <Column editable="true" title="Huisnr" type="java.lang.Object"/>
-                    <Column editable="true" title="Stad" type="java.lang.Object"/>
-                    <Column editable="true" title="Postcode" type="java.lang.Object"/>
+                    <Column editable="true" title="Building name" type="java.lang.Object"/>
+                    <Column editable="true" title="Street" type="java.lang.Object"/>
+                    <Column editable="true" title="House nr" type="java.lang.Object"/>
+                    <Column editable="true" title="City" type="java.lang.Object"/>
+                    <Column editable="true" title="Post code" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -662,7 +665,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cd" green="b5" red="85" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Verdiepingen"/>
+            <Property name="text" type="java.lang.String" value="2 Floors"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane3">

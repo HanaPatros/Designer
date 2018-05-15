@@ -255,7 +255,7 @@ public class JFrameGebouwenTest1 {
         JFrameGebouwen instance = new JFrameGebouwen();
         List<String> expResult = new ArrayList();
         expResult.add("Selecteer een desk ...");
-        List<String> result = instance.putDesk();
+        List<String> result = instance.listOfDesks();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -284,7 +284,7 @@ public class JFrameGebouwenTest1 {
         JFrameGebouwen instance = new JFrameGebouwen();
         List<String> expResult = new ArrayList();
         expResult.add(null);
-        List<String> result = instance.getDesk1();
+        List<String> result = instance.getDeskList();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -298,7 +298,7 @@ public class JFrameGebouwenTest1 {
         System.out.println("setDesk1");
         List<String> desk = null;
         JFrameGebouwen instance = new JFrameGebouwen();
-        instance.setDesk1(desk);
+        instance.setDeskList(desk);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -311,7 +311,7 @@ public class JFrameGebouwenTest1 {
         System.out.println("getValue");
         JFrameGebouwen instance = new JFrameGebouwen();
         String expResult = "";
-        String result = instance.getValue();
+        String result = instance.getCmbDeskSelectedItem();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -325,7 +325,7 @@ public class JFrameGebouwenTest1 {
         System.out.println("setValue");
         String value = "";
         JFrameGebouwen instance = new JFrameGebouwen();
-        instance.setValue(value);
+        instance.setCmbDeskSelectedItem(value);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

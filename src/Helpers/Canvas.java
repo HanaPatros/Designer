@@ -1,7 +1,8 @@
 package Helpers;
 
 import DAO.DaCoordinaat;
-import Model.Coordinaat;
+import DAO.DaCoordinaatJPA;
+import Model.Coördinaat;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -44,7 +45,7 @@ public final class Canvas extends JComponent {
     private int X1, Y1, X2, Y2;
     int x, y, width, height;
     private Graphics2D g;
-    Image img, undoTemp, redoTemp;
+    Image img = null, undoTemp, redoTemp;
     Image background;
     ArrayList<Shape> shapes = new ArrayList<Shape>();
     private final SizedStack<Image> undoStack = new SizedStack<>(12);
@@ -54,14 +55,14 @@ public final class Canvas extends JComponent {
     private MouseMotionListener motion;
     private MouseListener listener;
     String svg;
-    Coordinaat cd;
-    List<Coordinaat> coordinaten;
+    Coördinaat cd;
+    List<Coördinaat> coördinaten;
     List<String> lst;
-    String gegeven;
+    String cmbDeskId;
     Floor floor;
     //Draw draw1 = new Draw();
     //List<String> svg = new ArrayList<>();
-    Graphics2D g2d;
+    Graphics2D g2d = null;
     Color color;
 
     public void save(File file) {
@@ -80,6 +81,7 @@ public final class Canvas extends JComponent {
         }
     }
 
+    @Override
     protected void paintComponent(Graphics g1) {
 
         if (img == null) {
@@ -114,11 +116,32 @@ public final class Canvas extends JComponent {
             g2d.draw(shape);
 
         }
+        
+        
+        
+        if (!em.isOpen()) {
+            em = emf.createEntityManager();
+        }
+        
+        coördinaten = new ArrayList<>();      
+
+        coördinaten = (List<Coördinaat>) em.createQuery("SELECT t FROM Coördinaat t ").getResultList();
+
+        if(coördinaten != null){
+        for (Coördinaat cd : coördinaten) {
+           
+            g2d = (Graphics2D) img.getGraphics();
+            g2d.setColor(Color.orange);
+            g2d.fillRect(cd.getX1(), cd.getY1(), cd.getWidth1(), cd.getHeight1());
+            repaint();
+        }       
+        }
+       
     }
 
     public Canvas() {
         setBackground(Color.WHITE);
-        cd = new Coordinaat();
+        cd = new Coördinaat();
         lst = new ArrayList();
         defaultListener();
         getData();
@@ -263,7 +286,7 @@ public final class Canvas extends JComponent {
 
         try {
 
-            TypedQuery<Coordinaat> query = (TypedQuery<Coordinaat>) em.createQuery("DELETE FROM Coordinaat c ", Coordinaat.class);
+            TypedQuery<Coördinaat> query = (TypedQuery<Coördinaat>) em.createQuery("DELETE FROM Coördinaat c ", Coördinaat.class);
             query.executeUpdate();
             em.getTransaction().commit();
 
@@ -368,46 +391,18 @@ public final class Canvas extends JComponent {
         public void mouseReleased(MouseEvent e) {
             if (shape.width != 0 || shape.height != 0) {
                 addRectangle(shape, e.getComponent().getForeground());
-
-            }
-            DaCoordinaat da = new DaCoordinaat();
-            coordinaten = da.getAllCoordinates();
-            if (coordinaten.isEmpty()) {
-            shape = null;
-            repaint();
-            saveOnMouseRelease();
-            }
-            
-            for(Coordinaat coordinaat : coordinaten){
-                if(!coordinaat.getDeskId().equals(getGegeven())){
-                    shape = null;
-                    repaint();
-                    saveOnMouseRelease();
-                }else{
-                    javax.swing.JOptionPane.showMessageDialog(null, "Opgelet: De desk die u hebt geselecteerd is reeds gekend!",
-                            "                                                        Foutbericht",
-                            javax.swing.JOptionPane.ERROR_MESSAGE);
-                   g.setPaint(Color.white);
-            g.fillRect(0, 0, getSize().width, getSize().height);
-            g.setPaint(Color.ORANGE);
-            int xZ = 1;
-            int yZ = 1;
-            int size = 10;
-            int teller = 0;
-
-            for (int i = 0; i < 1500; i++) {
-                for (int j = 0; j < 1500; j++) {
-                    teller = teller + 1;
-                    g.drawRect(xZ, yZ, size, size);
-                    yZ += size;
-                }
-                xZ += size;
-                yZ = 1;
-            }
-                    repaint();
-                }
                 
             }
+           
+               
+                shape = null;
+               // getRechthoekenOnStartUp();
+                repaint();
+                saveOnMouseRelease();
+              //  getRechthoekenOnStartUp();
+                // dataBankLeeg();
+           
+           
         }
     }
 
@@ -421,20 +416,53 @@ public final class Canvas extends JComponent {
         cd.setY1(y);
         cd.setWidth1(width);
         cd.setHeight1(height);
-        cd.setDeskId(getGegeven());
+        cd.setDeskId(getCmbDeskId());
         em.getTransaction().begin();
 
-        try {
-            // em.detach(stage);
+      
+             try {
+//            Coördinaat coördinaat = em.createQuery("SELECT d.deskId FROM Coördinaat d WHERE d.deskId = :deskId", Coördinaat.class).setParameter("deskId", getCmbDeskId()).getSingleResult();
+//            
+//                if(coördinaat.getDeskId() == null || !coördinaat.getDeskId().equals(getCmbDeskId())){
+//                    
+                
+            
             em.merge(cd);
             em.getTransaction().commit();
-
+            
+//             }else if(coördinaat.getDeskId().equals(getCmbDeskId())){
+// 
+//                    System.out.println("" + getCmbDeskId());
+// }
         } catch (Exception ex) {
-            em.getTransaction().rollback();
+           ex.getStackTrace();
+           getRechthoekenOnStartUp();
         } finally {
             em.close();
         }
     }
+    
+//    public void dataBankLeeg(){
+//         if (!em.isOpen()) {
+//            em = emf.createEntityManager();
+//        }
+//         //em.getTransaction().begin();
+//        Coordinaat coordinaat = null;
+//        try {
+//            coordinaat = (Coordinaat) em.createQuery("SELECT d FROM Coordinaat d WHERE d.deskId = :deskID", Coordinaat.class).setParameter("deskID", getCmbDeskId()).getSingleResult();
+//            em.getTransaction().commit();
+//        } catch (Exception e) {
+//        }
+//         
+//         if(!coordinaat.getDeskId().equals(getCmbDeskId()) ||  !coordinaat.getDeskId().equals(null)){
+//             
+//             saveOnMouseRelease();
+//         }else if(coordinaat.getDeskId().equals(getCmbDeskId())){
+//             javax.swing.JOptionPane.showMessageDialog(null, "Opgelet: Desk is reeds in gebruik!",
+//                            "                                                        Foutbericht",
+//                            javax.swing.JOptionPane.ERROR_MESSAGE);
+//         }
+//    }
 
     // haalt gegevens op uit de rechthoek die met knop aangemaakt wordt
     public void opslaanMetKnop() {
@@ -448,16 +476,19 @@ public final class Canvas extends JComponent {
         cd.setHeight1(height);
         em.getTransaction().begin();
 
-        try {
-            // em.detach(cd);
+       try{
+
+
+// em.detach(cd);
             em.merge(cd);
             em.getTransaction().commit();
-
+ 
         } catch (Exception ex) {
             em.getTransaction().rollback();
         } finally {
             em.close();
         }
+    
     }
 
     // haalt alle gegevens uit tabel coordinaat op
@@ -466,10 +497,10 @@ public final class Canvas extends JComponent {
             em = emf.createEntityManager();
         }
 
-        coordinaten = new ArrayList<>();
-        List<Coordinaat> coordinaten = (List<Coordinaat>) em.createQuery("SELECT t FROM Coordinaat t ").getResultList();
+        coördinaten = new ArrayList<>();
+        List<Coördinaat> coordinaten = (List<Coördinaat>) em.createQuery("SELECT t FROM Coördinaat t ").getResultList();
         svg = "<svg>";
-        for (Coordinaat cd : coordinaten) {
+        for (Coördinaat cd : coordinaten) {
 
             svg += "<rect id=" + '"' + cd.getDeskId() + '"' + " width=" + '"' + cd.getWidth1() + '"' + " height=" + '"' + cd.getHeight1() + '"' + " x=" + '"' + cd.getX1() + '"' + " y=" + '"' + cd.getY1() + '"' + "/>";
 
@@ -487,20 +518,25 @@ public final class Canvas extends JComponent {
         if (!em.isOpen()) {
             em = emf.createEntityManager();
         }
+        
+        coördinaten = new ArrayList<>();      
 
-        coordinaten = new ArrayList<>();
-
-        coordinaten = (List<Coordinaat>) em.createQuery("SELECT t FROM Coordinaat t ").getResultList();
-
-        for (Coordinaat cd : coordinaten) {
+        coördinaten = (List<Coördinaat>) em.createQuery("SELECT t FROM Coördinaat t ").getResultList();
+        if (coördinaten.isEmpty()){
+            javax.swing.JOptionPane.showMessageDialog(null, "Opgelet: Geen desk aanwezig in de databank!",
+                            "                                                        Foutbericht",
+                            javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+        else if(coördinaten != null){
+        for (Coördinaat cd : coördinaten) {
+           
             g2d = (Graphics2D) img.getGraphics();
             g2d.setColor(Color.orange);
-
             g2d.fillRect(cd.getX1(), cd.getY1(), cd.getWidth1(), cd.getHeight1());
-
+            repaint();
+        }       
         }
-
-        repaint();
+       
     }
 
     public void verwijderen(String deskId) {
@@ -511,14 +547,14 @@ public final class Canvas extends JComponent {
         em.getTransaction().begin();
 
         try {
-            Coordinaat coord = em.createQuery("SELECT d FROM Coordinaat d WHERE d.deskId = :deskId  ", Coordinaat.class).setParameter("deskId", deskId).getSingleResult();
-            Query query = em.createQuery("DELETE FROM Coordinaat c WHERE c.id = :coord", Coordinaat.class).setParameter("coord", coord.getId());
+            Coördinaat coord = em.createQuery("SELECT d FROM Coördinaat d WHERE d.deskId = :deskId  ", Coördinaat.class).setParameter("deskId", deskId).getSingleResult();
+            Query query = em.createQuery("DELETE FROM Coördinaat c WHERE c.id = :coord", Coördinaat.class).setParameter("coord", coord.getId());
             query.executeUpdate();
             em.getTransaction().commit();
             clear();
-            coordinaten = new ArrayList<>();
-            List<Coordinaat> coordinaten = (List<Coordinaat>) em.createQuery("SELECT t FROM Coordinaat t ").getResultList();
-            for (Coordinaat cd : coordinaten) {
+            coördinaten = new ArrayList<>();
+            List<Coördinaat> coordinaten = (List<Coördinaat>) em.createQuery("SELECT t FROM Coördinaat t ").getResultList();
+            for (Coördinaat cd : coordinaten) {
                 setRechthoeken(cd.getX1(), cd.getY1(), cd.getWidth1(), cd.getHeight1());
             }
         } catch (Exception ex) {
@@ -541,8 +577,8 @@ public final class Canvas extends JComponent {
         try {
 
             DaCoordinaat da = new DaCoordinaat();
-            coordinaten = da.getAllCoordinates();
-            if (coordinaten.isEmpty()) {
+            coördinaten = da.getAllCoordinates();
+            if (coördinaten.isEmpty()) {
                 g2d = (Graphics2D) img.getGraphics();
 
                 g2d.setColor(Color.orange);
@@ -557,9 +593,9 @@ public final class Canvas extends JComponent {
                 opslaanMetKnop();
                 repaint();
             }
-            for (Coordinaat coordinaat : coordinaten) {
+            for (int i = 0;i < coördinaten.size();i++) {
 
-                if (!coordinaat.getDeskId().equals(deskId)) {
+                if (!coördinaten.get(i).getDeskId().equals(deskId)) {
 
                     g2d = (Graphics2D) img.getGraphics();
 
@@ -615,11 +651,11 @@ public final class Canvas extends JComponent {
             em = emf.createEntityManager();
         }
 
-        coordinaten = new ArrayList<>();
+        coördinaten = new ArrayList<>();
         try {
-            List<Coordinaat> coordinaten = (List<Coordinaat>) em.createQuery("SELECT t FROM Coordinaat t ").getResultList();
+            List<Coördinaat> coordinaten = (List<Coördinaat>) em.createQuery("SELECT t FROM Coördinaat t ").getResultList();
 
-            for (Coordinaat cd : coordinaten) {
+            for (Coördinaat cd : coordinaten) {
                 g2d.setColor(Color.orange);
 
                 g2d.fillRect(cd.getX1(), cd.getY1(), cd.getWidth1(), cd.getHeight1());
@@ -632,14 +668,13 @@ public final class Canvas extends JComponent {
         repaint();
     }
 
-
     // geeft geselcteerde desk weer
-    public String getGegeven() {
-        return gegeven;
+    public String getCmbDeskId() {
+        return cmbDeskId;
     }
 
-    public void setGegeven(String gegeven) {
-        this.gegeven = gegeven;
+    public void setCmbDeskId(String cmbDeskId) {
+        this.cmbDeskId = cmbDeskId;
     }
 
     public Color getColor() {

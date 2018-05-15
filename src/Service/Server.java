@@ -48,14 +48,14 @@ public class Server {
             e.printStackTrace();
         }
         try {
-            conn = DriverManager.getConnection("jdbc:derby://localhost:1527/Coordinaten;create=true");
+            conn = DriverManager.getConnection("jdbc:derby://localhost:1527/Coördinaten;create=true");
              
             stmt = conn.createStatement();
           
              JFrameGebouwen gebouwen = new JFrameGebouwen();
              gebouwen.JInputWH.setVisible(true);
              //gebouwen.setVisible(true);
-            prestat = conn.prepareStatement("SELECT * FROM Coordinaat");
+            prestat = conn.prepareStatement("SELECT * FROM Coördinaat");
             result = prestat.executeQuery();
              
             StringBuilder builder = new StringBuilder();

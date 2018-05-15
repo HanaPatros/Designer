@@ -31,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
        "height"
 })
 @Entity
-public class Coordinaat  implements Serializable {
+public class Coördinaat  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty("Id")
@@ -99,11 +99,11 @@ public class Coordinaat  implements Serializable {
 
     
 
-    public Coordinaat() {
+    public Coördinaat() {
     }
     
 
-    public Coordinaat(int x, int y, int width, int height, String deskId) {
+    public Coördinaat(int x, int y, int width, int height, String deskId) {
         this.x = x;
         this.y = y;
         this.width = width;
