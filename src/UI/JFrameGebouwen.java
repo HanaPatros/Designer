@@ -74,7 +74,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
     private Object[] rowData;
     List<Floor> vloeren;
     long gebouwId = 0;
-    Long selectedFloorId;
+    Long selectedFloorId = null;
     String svg;
     
     public int width;
@@ -136,7 +136,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         populateGebouwTabel();
         populateLSTSVG();
         //ip = new InputWH();
-
+        
         JInputWH();
     }
 
@@ -243,7 +243,6 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         jlistVerdiepingen = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstSVG = new javax.swing.JList<>();
-        btnDesigner = new javax.swing.JButton();
         btnJson = new javax.swing.JButton();
         btnClose = new javax.swing.JButton();
 
@@ -507,7 +506,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         jLabel1.setBackground(new java.awt.Color(133, 181, 205));
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(133, 181, 205));
-        jLabel1.setText("1 Building \"select a builidng to get the coppled floors\"");
+        jLabel1.setText("1 Building \"select a builidng to get the coupled floors\"");
 
         tblGebouw.setBackground(new java.awt.Color(133, 181, 205));
         tblGebouw.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -544,7 +543,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         jLabel2.setBackground(new java.awt.Color(133, 181, 205));
         jLabel2.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(133, 181, 205));
-        jLabel2.setText("2 Floors");
+        jLabel2.setText("2 Floors \" select a floor number to attach the svg attributes and click then on the send button\"");
 
         lstVerdiepingen.setBackground(new java.awt.Color(133, 181, 205));
         lstVerdiepingen.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("sansserif", 1, 18))); // NOI18N
@@ -564,18 +563,9 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         lstSVG.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
         jScrollPane2.setViewportView(lstSVG);
 
-        btnDesigner.setBackground(new java.awt.Color(114, 158, 180));
-        btnDesigner.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
-        btnDesigner.setText("Designer");
-        btnDesigner.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDesignerActionPerformed(evt);
-            }
-        });
-
         btnJson.setBackground(new java.awt.Color(108, 149, 169));
         btnJson.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
-        btnJson.setText("Verzenden");
+        btnJson.setText("Send");
         btnJson.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnJsonActionPerformed(evt);
@@ -584,7 +574,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
 
         btnClose.setBackground(new java.awt.Color(108, 149, 169));
         btnClose.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
-        btnClose.setText("Sluiten");
+        btnClose.setText("Close");
         btnClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCloseActionPerformed(evt);
@@ -597,7 +587,6 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         jLayeredPane2.setLayer(jScrollPane3, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(jScrollPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(jScrollPane2, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane2.setLayer(btnDesigner, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(btnJson, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(btnClose, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -615,10 +604,8 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 1036, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jLayeredPane2Layout.createSequentialGroup()
-                        .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jLayeredPane2Layout.createSequentialGroup()
-                                .addComponent(btnDesigner, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(302, 302, 302)
+                        .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jLayeredPane2Layout.createSequentialGroup()
                                 .addComponent(btnJson, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -626,8 +613,11 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1036, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1036, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jLayeredPane2Layout.createSequentialGroup()
+                                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1036, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1036, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap(45, Short.MAX_VALUE))))
         );
         jLayeredPane2Layout.setVerticalGroup(
@@ -647,7 +637,6 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
                 .addGap(35, 35, 35)
                 .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnJson, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDesigner, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnClose))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -692,34 +681,20 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
 
     }//GEN-LAST:event_tblGebouwMouseClicked
 
-    private void btnDesignerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesignerActionPerformed
-        this.dispose();
-        this.JInputWH.setVisible(true);
-        this.JInputWH.setLocationRelativeTo(null);
-        this.JInputWH.setSize(600, 300);
-        this.JInputWH.setDefaultCloseOperation(JInputWH.EXIT_ON_CLOSE);
-        
-// InputWH ip = new InputWH(); 
-//            SwingUtilities.invokeLater(new Runnable() {            
-//            @Override
-//            public void run() {
-//                InputWH ip = new InputWH();                
-//            }
-//        });
-
-        //this.ip = new InputWH();    
-        //ip = new InputWH();
-        //ip.setVisible(true);
-
-    }//GEN-LAST:event_btnDesignerActionPerformed
-
     private void btnJsonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJsonActionPerformed
-
-        selectedFloorId = Long.parseLong(lstVerdiepingen.getSelectedValue());
+     
+        try {
+            selectedFloorId = Long.parseLong(lstVerdiepingen.getSelectedValue());            
+        } catch (NumberFormatException numberFormatException) {
+           javax.swing.JOptionPane.showMessageDialog(null, "Opgelet: U hebt geen verdieping geselecteerd!",
+                            "                                                        Foutbericht",
+                            javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+            
         svg = canvas.getLst().toString();
         Floor verdiep = new Floor();
         Floor verdieping1 = new Floor();
-
+        
         try {
 
             verdieping1 = json.getFloorById(selectedFloorId);
@@ -727,17 +702,18 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
             verdiep.setName(verdieping1.getName());
             verdiep.setNumber(verdieping1.getNumber());
             verdiep.setFloorCode(verdieping1.getFloorCode());
-            verdiep.setSVG(svg);
-            verdiep.setFloorId(selectedFloorId);
+            verdiep.setSVG(svg);            
+            verdiep.setFloorId(selectedFloorId);            
             verdiep.setBuildingId(verdieping1.getBuildingId());
-
             json.addFloorSVG(verdiep);
+            javax.swing.JOptionPane.showConfirmDialog(null, "GELUKT! De SVG attributen werden succesvol verzonden!",
+                            "                                                        Foutbericht",
+                            javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
         } catch (IOException ex) {
             ex.getStackTrace();
-        }
-
-
+        }      
+        
     }//GEN-LAST:event_btnJsonActionPerformed
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
@@ -1294,7 +1270,6 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
     public javax.swing.JFrame JInputWH;
     private javax.swing.JButton Verwijderen;
     private javax.swing.JButton btnClose;
-    private javax.swing.JButton btnDesigner;
     private javax.swing.JButton btnDraw;
     private javax.swing.JButton btnJson;
     private javax.swing.JButton btnOK;

@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import javax.persistence.Column;
 
 
 /*
@@ -36,6 +37,7 @@ public class Coördinaat  implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty("Id")
     Long id;
+    @Column(unique=true)
     @JsonProperty("deskId")
     public String deskId;
     @JsonProperty("x")
