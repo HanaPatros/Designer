@@ -22,28 +22,17 @@ import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JColorChooser;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.swing.JTextField;
-import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import static org.testng.internal.Utils.stackTrace;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -232,6 +221,8 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         inputHeight = new javax.swing.JTextField();
         filenameBar = new javax.swing.JLabel();
         btnDraw = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnEditRect = new javax.swing.JButton();
         jLayeredPane2 = new javax.swing.JLayeredPane();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -337,6 +328,11 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         );
 
         Verwijderen.setText("Remove desk");
+        Verwijderen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VerwijderenActionPerformed(evt);
+            }
+        });
 
         Aanmaken.setText("Draw");
 
@@ -365,19 +361,46 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
 
         lblX.setText("X:");
 
+        inputX.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        inputX.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputXActionPerformed(evt);
+            }
+        });
+
         lblY.setText("Y:");
+
+        inputY.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         lblWidth.setText("Width:");
 
+        inputWidth.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
         lblHeight.setText("Height:");
+
+        inputHeight.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         filenameBar.setBackground(new java.awt.Color(153, 153, 153));
         filenameBar.setText("no file");
 
-        btnDraw.setText("Get drawing");
+        btnDraw.setText("Get all desks");
         btnDraw.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDrawActionPerformed(evt);
+            }
+        });
+
+        btnEdit.setText("Get coordinates");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+
+        btnEditRect.setText("Edit rectangle");
+        btnEditRect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditRectActionPerformed(evt);
             }
         });
 
@@ -419,10 +442,16 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
                         .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(saveAsButton, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(clearButton, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addContainerGap(101, Short.MAX_VALUE))
+                        .addContainerGap(104, Short.MAX_VALUE))
                     .addGroup(JDrawLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(inputHeight)
+                        .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(inputHeight)
+                            .addGroup(JDrawLayout.createSequentialGroup()
+                                .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnEditRect)
+                                    .addComponent(btnEdit))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JDrawLayout.createSequentialGroup()
                 .addGap(100, 100, 100)
@@ -467,7 +496,12 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
                                 .addComponent(loadButton))
                             .addGroup(JDrawLayout.createSequentialGroup()
                                 .addGap(35, 35, 35)
-                                .addComponent(saveButton))))
+                                .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(saveButton)
+                                    .addGroup(JDrawLayout.createSequentialGroup()
+                                        .addComponent(btnEdit)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btnEditRect))))))
                     .addGroup(JDrawLayout.createSequentialGroup()
                         .addGap(69, 69, 69)
                         .addComponent(rectangle)))
@@ -488,7 +522,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
                 .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblHeight)
                     .addComponent(inputHeight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(160, Short.MAX_VALUE))
+                .addContainerGap(144, Short.MAX_VALUE))
             .addGroup(JDrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(JDrawLayout.createSequentialGroup()
                     .addGap(159, 159, 159)
@@ -506,7 +540,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         jLabel1.setBackground(new java.awt.Color(133, 181, 205));
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(133, 181, 205));
-        jLabel1.setText("1 Building \"select a builidng to get the coupled floors\"");
+        jLabel1.setText("1 Building \"select a building to get the coupled floors\"");
 
         tblGebouw.setBackground(new java.awt.Color(133, 181, 205));
         tblGebouw.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -543,7 +577,7 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         jLabel2.setBackground(new java.awt.Color(133, 181, 205));
         jLabel2.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(133, 181, 205));
-        jLabel2.setText("2 Floors \" select a floor number to attach the svg attributes and click then on the send button\"");
+        jLabel2.setText("2 Floors \" select a floor number and click then on send button\"");
 
         lstVerdiepingen.setBackground(new java.awt.Color(133, 181, 205));
         lstVerdiepingen.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("sansserif", 1, 18))); // NOI18N
@@ -794,6 +828,33 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
        
     }//GEN-LAST:event_GebouwenActionPerformed
 
+    private void VerwijderenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerwijderenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_VerwijderenActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        canvas.edit(cmbDeskSelectedItem);
+        
+        inputX.setText(String.valueOf(canvas.getXEdit()) );
+        inputY.setText(String.valueOf(canvas.getYEdit()));
+        inputWidth.setText(String.valueOf(canvas.getWidthEdit()));
+        inputHeight.setText(String.valueOf(canvas.getHeightEdit()));
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnEditRectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditRectActionPerformed
+        
+        canvas.setXEdit(Integer.parseInt(inputX.getText()));
+        canvas.setYEdit(Integer.parseInt(inputY.getText()));
+        canvas.setWidthEdit(Integer.parseInt(inputWidth.getText()));
+        canvas.setHeightEdit(Integer.parseInt(inputHeight.getText()));
+        canvas.verwijderen(cmbDeskSelectedItem);
+        canvas.oplsaan();
+    }//GEN-LAST:event_btnEditRectActionPerformed
+
+    private void inputXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputXActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inputXActionPerformed
+
     public void JDraw() {
 
         Container container = this.JDraw.getContentPane();
@@ -825,17 +886,17 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         saveAsButton.setForeground(Color.WHITE);
         saveAsButton.addActionListener(listener);
 
-        panel.add(loadButton);
-        loadButton.setFont(new Font("serif", Font.BOLD, 20));
-        loadButton.setBackground(Color.DARK_GRAY);
-        loadButton.setForeground(Color.WHITE);
-        loadButton.addActionListener(listener);
+//        panel.add(loadButton);
+//        loadButton.setFont(new Font("serif", Font.BOLD, 20));
+//        loadButton.setBackground(Color.DARK_GRAY);
+//        loadButton.setForeground(Color.WHITE);
+//        loadButton.addActionListener(listener);
 
-        panel.add(colorPicker);
-        colorPicker.setFont(new Font("serif", Font.BOLD, 20));
-        colorPicker.setBackground(Color.DARK_GRAY);
-        colorPicker.setForeground(Color.WHITE);
-        colorPicker.addActionListener(listener);
+//        panel.add(colorPicker);
+//        colorPicker.setFont(new Font("serif", Font.BOLD, 20));
+//        colorPicker.setBackground(Color.DARK_GRAY);
+//        colorPicker.setForeground(Color.WHITE);
+//        colorPicker.addActionListener(listener);
 
         panel.add(clearButton);
         clearButton.setFont(new Font("serif", Font.BOLD, 20));
@@ -848,6 +909,18 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
         Verwijderen.setBackground(Color.DARK_GRAY);
         Verwijderen.setForeground(Color.WHITE);
         Verwijderen.addActionListener(listener);
+        
+        panel.add(btnEdit);
+        btnEdit.setFont(new Font("serif", Font.BOLD, 20));
+        btnEdit.setBackground(Color.DARK_GRAY);
+        btnEdit.setForeground(Color.WHITE);
+        btnEdit.addActionListener(listener);
+        
+        panel.add(btnEditRect);
+        btnEditRect.setFont(new Font("serif", Font.BOLD, 20));
+        btnEditRect.setBackground(Color.DARK_GRAY);
+        btnEditRect.setForeground(Color.WHITE);
+        btnEditRect.addActionListener(listener);
 
         panel.add(Gebouwen);
         Gebouwen.setFont(new Font("serif", Font.BOLD, 20));
@@ -1271,6 +1344,8 @@ public final class JFrameGebouwen extends javax.swing.JFrame {
     private javax.swing.JButton Verwijderen;
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnDraw;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnEditRect;
     private javax.swing.JButton btnJson;
     private javax.swing.JButton btnOK;
     private javax.swing.JButton clearButton;

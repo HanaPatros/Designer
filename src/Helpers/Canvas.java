@@ -33,6 +33,7 @@ import javax.persistence.Persistence;
 import javax.swing.JComponent;
 import javax.swing.event.MouseInputAdapter;
 import Model.Floor;
+import UI.JFrameGebouwen;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
@@ -59,6 +60,11 @@ public final class Canvas extends JComponent {
     List<Coördinaat> coördinaten;
     List<String> lst;
     String cmbDeskId;
+    
+    int XEdit, YEdit,WidthEdit, HeightEdit;
+    String cmbDeskIdEdit;
+    Long IdEdit;
+    
     Floor floor;
     //Draw draw1 = new Draw();
     //List<String> svg = new ArrayList<>();
@@ -121,7 +127,7 @@ public final class Canvas extends JComponent {
            
             g2d = (Graphics2D) img.getGraphics();
             g2d.setColor(Color.orange);
-            g2d.fillRect(cd.getX1(), cd.getY1(), cd.getWidth1(), cd.getHeight1());
+            g2d.fill3DRect(cd.getX1(), cd.getY1(), cd.getWidth1(), cd.getHeight1(), true);
 //            repaint();
         }       
         }
@@ -408,21 +414,11 @@ public final class Canvas extends JComponent {
 
       
              try {
-//            Coördinaat coördinaat = em.createQuery("SELECT d.deskId FROM Coördinaat d WHERE d.deskId = :deskId", Coördinaat.class).setParameter("deskId", getCmbDeskId()).getSingleResult();
-//            
-//                if(coördinaat.getDeskId() == null || !coördinaat.getDeskId().equals(getCmbDeskId())){
-//                    
-                
-            
+      
+        em.merge(cd);
                  
-                     em.merge(cd);
-                 
-            em.getTransaction().commit();
-            
-//             }else if(coördinaat.getDeskId().equals(getCmbDeskId())){
-// 
-//                    System.out.println("" + getCmbDeskId());
-// }
+        em.getTransaction().commit();            
+
         } catch (Exception ex) {
              javax.swing.JOptionPane.showMessageDialog(null, "Opgelet: Desk is reeds in gebruik!",
                             "                                                        Foutbericht",
@@ -433,29 +429,7 @@ public final class Canvas extends JComponent {
              //verwijderd desk indien reeds dubbel
              getRechthoekenOnStartUp();
     }
-    
-//    public void dataBankLeeg(){
-//         if (!em.isOpen()) {
-//            em = emf.createEntityManager();
-//        }
-//         //em.getTransaction().begin();
-//        Coordinaat coordinaat = null;
-//        try {
-//            coordinaat = (Coordinaat) em.createQuery("SELECT d FROM Coordinaat d WHERE d.deskId = :deskID", Coordinaat.class).setParameter("deskID", getCmbDeskId()).getSingleResult();
-//            em.getTransaction().commit();
-//        } catch (Exception e) {
-//        }
-//         
-//         if(!coordinaat.getDeskId().equals(getCmbDeskId()) ||  !coordinaat.getDeskId().equals(null)){
-//             
-//             saveOnMouseRelease();
-//         }else if(coordinaat.getDeskId().equals(getCmbDeskId())){
-//             javax.swing.JOptionPane.showMessageDialog(null, "Opgelet: Desk is reeds in gebruik!",
-//                            "                                                        Foutbericht",
-//                            javax.swing.JOptionPane.ERROR_MESSAGE);
-//         }
-//    }
-
+   
     // haalt gegevens op uit de rechthoek die met knop aangemaakt wordt
     public void opslaanMetKnop() {
         if (!em.isOpen()) {
@@ -535,7 +509,7 @@ public final class Canvas extends JComponent {
            
             g2d = (Graphics2D) img.getGraphics();
             g2d.setColor(Color.orange);
-            g2d.fillRect(cd.getX1(), cd.getY1(), cd.getWidth1(), cd.getHeight1());
+            g2d.fill3DRect(cd.getX1(), cd.getY1(), cd.getWidth1(), cd.getHeight1(), true);
             repaint();
         }       
         }
@@ -569,6 +543,62 @@ public final class Canvas extends JComponent {
         //getData();
         //repaint();
     }
+    
+    public void edit(String deskId){
+        if (!em.isOpen()) {
+            em = emf.createEntityManager();
+        }
+        em.getTransaction().begin();
+
+        try {
+            Coördinaat coord = em.createQuery("SELECT d FROM Coördinaat d WHERE d.deskId = :deskId  ", Coördinaat.class).setParameter("deskId", deskId).getSingleResult();
+           
+             IdEdit =   coord.getId();    
+             cmbDeskIdEdit =  coord.getDeskId();
+             XEdit = coord.getX1();
+             YEdit = coord.getY1();
+             WidthEdit = coord.getWidth1();
+             HeightEdit = coord.getHeight1();
+                            
+            } catch (Exception ex) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public void oplsaan(){
+        if (!em.isOpen()) {
+            em = emf.createEntityManager();
+        }
+       
+
+        
+        cd.setX1(XEdit);
+        cd.setY1(YEdit);
+        cd.setWidth1(WidthEdit);
+        cd.setHeight1(HeightEdit);
+        cd.setDeskId(getCmbDeskId());
+        em.getTransaction().begin();
+
+      
+             try {
+      
+        em.merge(cd);
+                 
+        em.getTransaction().commit();            
+
+        } catch (Exception ex) {
+             javax.swing.JOptionPane.showMessageDialog(null, "Opgelet: Desk is reeds in gebruik!",
+                            "                                                        Foutbericht",
+                            javax.swing.JOptionPane.ERROR_MESSAGE);     
+        } finally {
+            em.close();
+            getRechthoekenOnStartUp();
+        }
+             
+             
+    }
 
     public List<String> getLst() {
         return lst;
@@ -583,7 +613,7 @@ public final class Canvas extends JComponent {
 
                     g2d.setColor(Color.orange);
 
-                    g2d.fillRect(x, y, width, height);
+                    g2d.fill3DRect(x, y, width, height, true);
                     this.x = x;
                     this.y = y;
                     this.width = width;
@@ -612,7 +642,7 @@ public final class Canvas extends JComponent {
 
         g2d = (Graphics2D) img.getGraphics();
         g2d.setColor(Color.orange);
-        g2d.fillRect(x, y, width, height);
+        g2d.fill3DRect(x, y, width, height, true);
 
         repaint();
 
@@ -657,5 +687,58 @@ public final class Canvas extends JComponent {
     public void setColor(Color color) {
         this.color = color;
     }
+
+    public int getYEdit() {
+        return YEdit;
+    }
+
+    public void setYEdit(int YEdit) {
+        this.YEdit = YEdit;
+    }
+
+    public int getWidthEdit() {
+        return WidthEdit;
+    }
+
+    public void setWidthEdit(int WidthEdit) {
+        this.WidthEdit = WidthEdit;
+    }
+
+    public int getHeightEdit() {
+        return HeightEdit;
+    }
+
+    public void setHeightEdit(int HeightEdit) {
+        this.HeightEdit = HeightEdit;
+    }
+
+    public String getCmbDeskIdEdit() {
+        return cmbDeskIdEdit;
+    }
+
+    public void setCmbDeskIdEdit(String cmbDeskIdEdit) {
+        this.cmbDeskIdEdit = cmbDeskIdEdit;
+    }
+
+    public Long getIdEdit() {
+        return IdEdit;
+    }
+
+    public void setIdEdit(Long IdEdit) {
+        this.IdEdit = IdEdit;
+    }
+
+    public int getXEdit() {
+        return XEdit;
+    }
+
+    public void setXEdit(int XEdit) {
+        this.XEdit = XEdit;
+    }
+
+    
+
+   
+    
 
 }
