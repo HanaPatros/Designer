@@ -1,6 +1,5 @@
 package Model;
 
-
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,27 +16,26 @@ import javax.persistence.Column;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author sa59053
  */
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-       "Id",
-       "x",
-       "y",
-       "width",
-       "height"
+    "Id",
+    "x",
+    "y",
+    "width",
+    "height"
 })
 @Entity
-public class Coördinaat  implements Serializable {
+public class Coördinaat implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty("Id")
     Long id;
-    @Column(unique=true)
+    @Column(unique = true)
     @JsonProperty("deskId")
     public String deskId;
     @JsonProperty("x")
@@ -48,9 +46,7 @@ public class Coördinaat  implements Serializable {
     int width;
     @JsonProperty("height")
     int height;
-   
-    
-    
+
     @JsonProperty("x")
     public int getX1() {
         return x;
@@ -99,11 +95,8 @@ public class Coördinaat  implements Serializable {
         this.id = id;
     }
 
-    
-
     public Coördinaat() {
     }
-    
 
     public Coördinaat(int x, int y, int width, int height, String deskId) {
         this.x = x;
@@ -113,12 +106,10 @@ public class Coördinaat  implements Serializable {
         this.deskId = deskId;
     }
 
-    
-    
-    public String toString(){
-     return   "<svg width='1500'"+" height='1500' >"+ 
-                            "< rect width='"+getWidth1()+"'"+" height='"+ getHeight1() + " x='"+getX1()+"'" + "y='"+ getY1()+"'" + "/>"+
-                             "</svg>";
+    public String toString() {
+        return "<svg width='1500'" + " height='1500' >"
+                + "< rect width='" + getWidth1() + "'" + " height='" + getHeight1() + " x='" + getX1() + "'" + "y='" + getY1() + "'" + "/>"
+                + "</svg>";
     }
 
     public String getDeskId() {
@@ -129,7 +120,4 @@ public class Coördinaat  implements Serializable {
         this.deskId = deskId;
     }
 
-   
-    
-    
 }

@@ -27,19 +27,20 @@ import java.net.URL;
  */
 public class JsonService {
 
-    ObjectMapper mapper = new ObjectMapper();
-    List<Building> gebouwen;
-    List<Floor> verdiepingen;
-    List<Department> departments;
-    Building gebouw;
-    Department department;
+    private ObjectMapper mapper = new ObjectMapper();
+    private List<Building> gebouwen;
+    private List<Floor> verdiepingen;
+    private List<Department> departments;
+    private Building gebouw;
+    private Department department;
 
     public Floor getFloorById(Long floorId) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectMapper mapper1 = new ObjectMapper();
         Floor verdiep = new Floor();
         try {
-            verdiep = objectMapper.readValue(new URL("http://flexdeskapplication.azurewebsites.net/api/Floor/" + floorId.toString()), Floor.class);
+            verdiep = objectMapper.readValue(new URL("http://flexdeskapplication.azurewebsites.net/api/Floor/"
+                    + floorId.toString()), Floor.class);
 
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -49,14 +50,12 @@ public class JsonService {
     }
 
     public List<Building> getAllBuildings() throws IOException {
-
         gebouwen = new ArrayList();
 
         try {
-            gebouwen = mapper.readValue(new URL("http://flexdeskapplication.azurewebsites.net/api/Building"), mapper.getTypeFactory().constructCollectionType(List.class, Building.class));
+            gebouwen = mapper.readValue(new URL("http://flexdeskapplication.azurewebsites.net/api/Building"),
+                    mapper.getTypeFactory().constructCollectionType(List.class, Building.class));
 
-//gebouwen = mapper.readValue(new URL("http://flexdeskapplication.azurewebsites.net/api/Building"), mapper.getTypeFactory().constructCollectionType(List.class, Building.class));
-// System.out.println("gebouwen");
         } catch (IOException e) {
             // TODO Auto-generated catch block
 
@@ -69,18 +68,20 @@ public class JsonService {
         verdiepingen = new ArrayList();
         try {
 
-            verdiepingen = mapper.readValue(new URL("http://flexdeskapplication.azurewebsites.net/api/Floor/"), mapper.getTypeFactory().constructCollectionType(List.class, Floor.class));
-            
+            verdiepingen = mapper.readValue(new URL("http://flexdeskapplication.azurewebsites.net/api/Floor/"),
+                    mapper.getTypeFactory().constructCollectionType(List.class, Floor.class));
+
         } catch (MalformedURLException ex) {
         }
         return (List<Floor>) verdiepingen;
     }
-    public List<Department> getAllDepartments() throws IOException{
+
+    public List<Department> getAllDepartments() throws IOException {
         departments = new ArrayList();
-        
-        try{
+
+        try {
             departments = mapper.readValue(new URL("http://flexdeskapplication.azurewebsites.net/api/Department"), mapper.getTypeFactory().constructCollectionType(List.class, Department.class));
-        }catch (MalformedURLException ex) {
+        } catch (MalformedURLException ex) {
         }
         return (List<Department>) departments;
     }
@@ -89,7 +90,7 @@ public class JsonService {
 
         ObjectMapper objectMapper = new ObjectMapper();
         StringWriter stringEmp = new StringWriter();
-        
+
         try {
 
             objectMapper.writeValue(stringEmp, verdieping);
@@ -102,12 +103,12 @@ public class JsonService {
             con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             con.setRequestMethod("PUT");
             con.setDoOutput(true);
-            
+
             OutputStream os = con.getOutputStream();
             os.write(stringEmp.toString().getBytes("UTF-8"));
             int test = con.getResponseCode();
-            System.out.println(""+ test);
-            
+            System.out.println("" + test);
+
         } catch (IOException e) {
             e.fillInStackTrace();
         }

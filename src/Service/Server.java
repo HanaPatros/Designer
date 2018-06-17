@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package Service;
+
 import UI.JFrameGebouwen;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -17,19 +18,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.apache.derby.drda.NetworkServerControl;
+
 /**
  *
  * @author sa59053
  */
 public class Server {
+
     public static void main(String[] args) {
         NetworkServerControl server = null;
         Connection conn = null;
         PreparedStatement prestat = null;
         Statement stmt = null;
         ResultSet result = null;
-        
-         try {
+
+        try {
             server = new NetworkServerControl(InetAddress.getByName("localhost"), 1527);
             server.start(null);
         } catch (UnknownHostException e1) {
@@ -37,7 +40,7 @@ public class Server {
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-         
+
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
         } catch (InstantiationException e) {
@@ -49,54 +52,60 @@ public class Server {
         }
         try {
             conn = DriverManager.getConnection("jdbc:derby://localhost:1527/Coördinaten;create=true");
-             
+
             stmt = conn.createStatement();
-          
-             JFrameGebouwen gebouwen = new JFrameGebouwen();
-             gebouwen.JInputWH.setVisible(true);
-             //gebouwen.setVisible(true);
+
+            JFrameGebouwen gebouwen = new JFrameGebouwen();
+            gebouwen.JInputWH.setVisible(true);
+            //gebouwen.setVisible(true);
             prestat = conn.prepareStatement("SELECT * FROM Coördinaat");
             result = prestat.executeQuery();
-             
+
             StringBuilder builder = new StringBuilder();
-            while (result.next())
-            {
+            while (result.next()) {
                 builder.append(result.getInt(1) + ", " + result.getString(2));
                 builder.append('\n');
             }
-             
+
             JOptionPane.showMessageDialog(null, builder.toString());
-             
+
             result.close();
             result = null;
             prestat.close();
             prestat = null;
             conn.close();
             conn = null;
-             
+
             server.shutdown();
-             
+
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally{
-            if (result != null){
-                try { result.close();} catch (SQLException e){;}
+        } finally {
+            if (result != null) {
+                try {
+                    result.close();
+                } catch (SQLException e) {;
+                }
                 result = null;
             }
-            if (prestat != null){
-                try { prestat.close();} catch (SQLException e){;}
+            if (prestat != null) {
+                try {
+                    prestat.close();
+                } catch (SQLException e) {;
+                }
                 prestat = null;
             }
-            if (conn != null){
-                try {conn.close();} catch(SQLException e) {;}
-            conn = null;
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {;
+                }
+                conn = null;
             }
         }
-     
+
     }
-        
-    
+
 }
